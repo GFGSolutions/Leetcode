@@ -1,0 +1,51 @@
+// User Template For Java
+
+class Solution {
+  private int sum = 0;
+  public TreeNode bstToGst(TreeNode root) { 
+    if (root != null) {
+      bstToGst(root.right); 
+      sum += root.val; 
+      root.val = sum; 
+      bstToGst(root.left); 
+    }
+    return root;
+  }
+}
+
+
+
+// User Template For C++
+class Solution {
+private:
+    int sum = 0;
+
+    void traverse(TreeNode* root) {
+        if (root) {
+            traverse(root->right); 
+            sum += root->val;  
+            root->val = sum; 
+            traverse(root->left); 
+        }
+    }
+public:
+    TreeNode* bstToGst(TreeNode* root) {
+        traverse(root);
+        return root;
+    }
+};
+
+
+
+// User Template For Python
+class Solution(object):
+    def __init__(self):
+        self.sum = 0
+    def bstToGst(self, root):
+        if root:
+            self.bstToGst(root.right) 
+            self.sum += root.val
+            root.val = self.sum 
+            self.bstToGst(root.left) 
+        return root
+        
