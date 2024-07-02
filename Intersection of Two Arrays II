@@ -1,0 +1,84 @@
+// User Template For Java
+
+class Solution {
+  public int[] intersect(int[] nums1, int[] nums2) {
+    int l1 = nums1.length;
+    int l2 = nums2.length;
+    int i = 0, j = 0, k = 0;
+    Arrays.sort(nums1);
+    Arrays.sort(nums2);
+    while( i < l1 && j < l2)
+    {
+      if(nums1[i] < nums2[j])
+      {
+        i++;
+      }
+      else if(nums1[i] > nums2[j])
+      {
+        j++;
+      }
+      else
+      {
+        nums1[k++] = nums1[i++];
+        j++;
+      }
+    }
+    return Arrays.copyOfRange(nums1,0,k);
+  }
+}
+
+
+
+
+
+// User Template For C++
+class Solution {
+public:
+    vector<int> intersect(vector<int>& nums1, vector<int>& nums2) {
+        sort(nums1.begin(), nums1.end());
+        sort(nums2.begin(), nums2.end());
+        
+        int i = 0, j = 0;
+        vector<int> result;
+        
+        while (i < nums1.size() && j < nums2.size()) {
+            if (nums1[i] < nums2[j]) {
+                i++;
+            } else if (nums1[i] > nums2[j]) {
+                j++;
+            } else {
+                result.push_back(nums1[i]);
+                i++;
+                j++;
+            }
+        }
+        
+        return result;
+    }
+};
+
+
+
+
+
+// User Template For Python
+class Solution(object):
+    def intersect(self, nums1, nums2):
+        nums1.sort()
+        nums2.sort()
+        
+        i, j = 0, 0
+        result = []
+        
+        while i < len(nums1) and j < len(nums2):
+            if nums1[i] < nums2[j]:
+                i += 1
+            elif nums1[i] > nums2[j]:
+                j += 1
+            else:
+                result.append(nums1[i])
+                i += 1
+                j += 1
+                
+        return result
+        
