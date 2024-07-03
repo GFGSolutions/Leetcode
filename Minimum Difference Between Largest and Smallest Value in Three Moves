@@ -1,0 +1,52 @@
+// User Template For Java
+
+class Solution {
+  public int minDifference(int[] nums) {
+    if (nums.length <= 4) {
+      return 0;
+    }
+    Arrays.sort(nums);
+    int k = nums.length - 3;
+    int ans = nums[nums.length - 1] - nums[0];
+    for (int i = k - 1; i < nums.length; i++) {
+      ans = Math.min(ans, nums[i] - nums[i - k + 1]);
+    }
+    return ans;
+  }
+}
+
+
+
+
+// User Template For C++
+class Solution {
+public:
+    int minDifference(vector<int>& nums) {
+        if(nums.size() <= 4) {
+            return 0;
+        }
+        sort(nums.begin(), nums.end());
+        int k = nums.size() - 3;
+        int ans = nums.back() - nums[0];
+        for(int i = k - 1; i < nums.size(); i++) {
+            ans = min(ans, nums[i] - nums[i - k + 1]);
+        }
+        return ans;
+    }
+};
+
+
+
+
+
+// User Template For Python
+class Solution:
+    def minDifference(self, nums: List[int]) -> int:
+        if len(nums) <= 4:
+            return 0
+        nums.sort()
+        k = len(nums) - 3
+        ans = nums[-1] - nums[0]
+        for i in range(k - 1, len(nums)):
+            ans = min(ans, nums[i] - nums[i - k + 1])
+        return ans
