@@ -1,0 +1,42 @@
+// User Template For Java
+
+class Solution {
+  public int numWaterBottles(int numBottles, int numExchange) {
+    int totalBottles = numBottles;
+    while (numBottles >= numExchange) {
+      totalBottles += numBottles / numExchange;
+      numBottles = (numBottles / numExchange) + (numBottles % numExchange);
+    }
+    return totalBottles;
+  }
+}
+
+
+
+// User Template For C++
+class Solution {
+public:
+    int numWaterBottles(int numBottles, int numExchange) {
+        int totalBottles = numBottles;
+
+        while (numBottles >= numExchange) {
+            totalBottles += numBottles / numExchange;
+            numBottles = (numBottles / numExchange) + (numBottles % numExchange);
+        }
+
+        return totalBottles;
+    }
+};
+
+
+
+// User Template For Python
+class Solution:
+    def numWaterBottles(self, numBottles: int, numExchange: int) -> int:
+        totalBottles = numBottles
+
+        while numBottles >= numExchange:
+            totalBottles += numBottles // numExchange
+            numBottles = numBottles // numExchange + numBottles % numExchange
+
+        return totalBottles
