@@ -1,0 +1,60 @@
+// User Template For Java
+
+class Solution {
+  public int findTheWinner(int n, int k) {
+    List<Integer> friends = new ArrayList<>();
+    for (int i = 1; i <= n; i++) {
+      friends.add(i);
+    }
+    int current_position = 0;
+    while (n > 1) {
+      current_position = (current_position + (k - 1)) % n;
+      friends.remove(current_position);
+      n--;
+    }
+    return friends.get(0);
+  }
+}
+
+
+
+
+// User Template For C++
+class Solution {
+public:
+    int findTheWinner(int n, int k) {
+        vector<int> friends(n);
+        iota(friends.begin(), friends.end(), 1);
+        int current_position = 0;
+        
+        while (n > 1) {
+            current_position = (current_position + (k - 1)) % n;
+            friends.erase(friends.begin() + current_position);
+            n--;
+        }
+        
+        return friends[0];
+    }
+};
+
+
+
+
+
+// User Template For Python
+class Solution:
+    def findTheWinner(self, n: int, k: int) -> int:
+        friends = list(range(1, n+1))
+        current_position = 0
+
+        # Till 1 friend is left
+        while n > 1:
+            # Current position after k move, (k-1) to include current friend.
+            current_position = (current_position + (k-1)) % n
+            # Remove picked friend
+            friends.pop(current_position)
+            # Decrement total friends
+            n -= 1
+
+        # Return last friend
+        return friends[0]
