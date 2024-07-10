@@ -1,0 +1,67 @@
+// User Template For Java
+
+class Solution {
+  public int minOperations(String[] logs) {
+    Stack<String> stack = new Stack<>();
+    for (String log : logs) {
+      if (log.equals("../")) {
+        if (!stack.isEmpty()) {
+          stack.pop();
+        }
+      } else if (!log.equals("./")) {
+        stack.push(log); 
+      }
+    }
+    return stack.size();
+  }
+}
+
+
+
+
+// User Template For C++
+class Solution {
+public:
+    int minOperations(vector<string>& logs) {
+        // Initialize a stack to keep track of the current directory depth
+        stack<string> stack;
+        
+        for (const string& log : logs) {
+            if (log == "../") {
+                if (!stack.empty()) {
+                    stack.pop();  // Go back one directory if possible
+                }
+            } else if (log != "./") {
+                stack.push(log);  // Enter a new directory
+            }
+        }
+        
+        // The size of the stack represents the depth of the directory
+        return stack.size();
+    }
+};
+
+
+
+
+
+
+// User Template For Python
+class Solution(object):
+    def minOperations(self, logs):
+        """
+        :type logs: List[str]
+        :rtype: int
+        """
+        # Initialize a stack to keep track of the current directory depth
+        stack = []
+
+        for log in logs:
+            if log == "../":
+                if stack:
+                    stack.pop()  # Go back one directory if possible
+            elif log != "./":
+                stack.append(log)  # Enter a new directory
+        
+        # The size of the stack represents the depth of the directory
+        return len(stack)
