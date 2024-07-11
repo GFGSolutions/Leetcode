@@ -1,0 +1,88 @@
+// User Template For Java
+
+class Solution {
+  int i = 0;
+  public String reverseParentheses(String s) {
+    char[] ar = s.toCharArray();
+    return helper(ar);
+  }
+  public String helper(char[] s){
+    StringBuilder sb = new StringBuilder();
+    while(i < s.length){
+      if(s[i] == ')'){
+        i++;
+        return sb.reverse().toString();
+      }else if(s[i] == '('){
+        i++;
+        String st = helper(s);
+        sb.append(st);
+      }else{
+        sb.append(s[i]);
+        i++;
+      }
+    }
+    return sb.toString();
+  }
+}
+
+
+
+
+
+// User Template For C++
+class Solution {
+int i = 0;
+public:
+    string reverseParentheses(string s) {
+        return helper(s);
+    }
+
+    string helper(string& s) {
+        string result;
+
+        while (i < s.length()) {
+            if (s[i] == ')') {
+                i++;
+                reverse(result.begin(), result.end());
+                return result;
+            } else if (s[i] == '(') {
+                i++;
+                string st = helper(s);
+                result += st;
+            } else {
+                result += s[i];
+                i++;
+            }
+        }
+        return result;
+    }
+};
+
+
+
+
+// User Template For Python
+class Solution(object):
+    def __init__(self):
+        self.i = 0
+
+    def reverseParentheses(self, s):
+        def helper(s):
+            sb = []
+
+            while self.i < len(s):
+                if s[self.i] == ')':
+                    self.i += 1
+                    return ''.join(sb)[::-1]
+                elif s[self.i] == '(':
+                    self.i += 1
+                    st = helper(s)
+                    sb.append(st)
+                else:
+                    sb.append(s[self.i])
+                    self.i += 1
+
+            return ''.join(sb)
+
+        return helper(s)
+        
