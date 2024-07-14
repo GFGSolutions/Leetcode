@@ -1,0 +1,144 @@
+// User Template For Java
+
+class Solution {
+   public String countOfAtoms(String formula) {
+    Stack<Map<String, Integer>> stack = new Stack<>();
+    stack.push(new HashMap<>());
+    int len = formula.length();
+    for (int i = 0; i < len; ) {
+      if (formula.charAt(i) == '(') {
+        stack.push(new HashMap<>());
+        i++;
+      } else if (formula.charAt(i) == ')') {
+        Map<String, Integer> top = stack.pop();
+        i++;
+        int start = i;
+        while (i < len && Character.isDigit(formula.charAt(i))) i++;
+        int multiplier = start < i ? Integer.parseInt(formula.substring(start, i)) : 1;
+        for (String key : top.keySet()) {
+          stack.peek().put(key, stack.peek().getOrDefault(key, 0) + top.get(key) * multiplier);
+        }
+      } else {
+        int start = i;
+        i++;
+        while (i < len && Character.isLowerCase(formula.charAt(i))) i++;
+        String element = formula.substring(start, i);
+        start = i;
+        while (i < len && Character.isDigit(formula.charAt(i))) i++;
+        int count = start < i ? Integer.parseInt(formula.substring(start, i)) : 1;
+        stack.peek().put(element, stack.peek().getOrDefault(element, 0) + count);
+      }
+    }
+    Map<String, Integer> result = stack.pop();
+    List<String> elements = new ArrayList<>(result.keySet());
+    Collections.sort(elements);
+    StringBuilder sb = new StringBuilder();
+    for (String element : elements) {
+      sb.append(element);
+      int count = result.get(element);
+      if (count > 1) sb.append(count);
+    }
+    return sb.toString();
+  }
+}
+
+
+
+
+
+// User Template For C++
+class Solution {
+public:
+    string countOfAtoms(string formula) {
+        stack<unordered_map<string, int>> stk;
+        stk.push({}); // Initialize with an empty map
+        
+        int i = 0, n = formula.length();
+        
+        while (i < n) {
+            if (formula[i] == '(') {
+                stk.push({});
+                i++;
+            } else if (formula[i] == ')') {
+                unordered_map<string, int> top = stk.top();
+                stk.pop();
+                i++;
+                int start = i;
+                while (i < n && isdigit(formula[i])) {
+                    i++;
+                }
+                int multiplier = start < i ? stoi(formula.substr(start, i - start)) : 1;
+                for (auto& kv : top) {
+                    stk.top()[kv.first] += kv.second * multiplier;
+                }
+            } else {
+                int start = i++;
+                while (i < n && islower(formula[i])) {
+                    i++;
+                }
+                string element = formula.substr(start, i - start);
+                start = i;
+                while (i < n && isdigit(formula[i])) {
+                    i++;
+                }
+                int count = start < i ? stoi(formula.substr(start, i - start)) : 1;
+                stk.top()[element] += count;
+            }
+        }
+        
+        unordered_map<string, int> result = stk.top();
+        vector<string> elements;
+        for (auto& kv : result) {
+            elements.push_back(kv.first);
+        }
+        sort(elements.begin(), elements.end());
+        
+        string res;
+        for (const auto& element : elements) {
+            res += element;
+            if (result[element] > 1) {
+                res += to_string(result[element]);
+            }
+        }
+        
+        return res;
+    }
+};
+
+
+
+
+// User Template For Python
+class Solution:
+    def countOfAtoms(self, formula: str) -> str:
+        stack = [{}]
+        i, n = 0, len(formula)
+
+        while i < n:
+            if formula[i] == '(':
+                stack.append({})
+                i += 1
+            elif formula[i] == ')':
+                top = stack.pop()
+                i += 1
+                i_start = i
+                while i < n and formula[i].isdigit():
+                    i += 1
+                multiplier = int(formula[i_start:i] or 1)
+                for element, count in top.items():
+                    stack[-1][element] = stack[-1].get(element, 0) + count * multiplier
+            else:
+                i_start = i
+                i += 1
+                while i < n and formula[i].islower():
+                    i += 1
+                element = formula[i_start:i]
+                i_start = i
+                while i < n and formula[i].isdigit():
+                    i += 1
+                count = int(formula[i_start:i] or 1)
+                stack[-1][element] = stack[-1].get(element, 0) + count
+
+        result = stack.pop()
+        sorted_elements = sorted(result.keys())
+        return ''.join(f"{element}{(result[element] if result[element] > 1 else '')}" for element in sorted_elements)
