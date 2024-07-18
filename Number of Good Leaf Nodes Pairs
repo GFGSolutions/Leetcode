@@ -1,0 +1,109 @@
+// User Template For Java
+
+class Solution {
+  private int count = 0;
+  private final int MAX_DISTANCE = 10;
+  public int countPairs(TreeNode root, int distance) {
+    dfs(root, distance);
+    return count;
+  }
+  private int[] dfs(TreeNode node, int distance) {
+    if (node == null) return new int[MAX_DISTANCE + 1];
+    if (node.left == null && node.right == null) {
+      int[] res = new int[MAX_DISTANCE + 1];
+      res[1] = 1;
+      return res;
+    }
+    int[] left = dfs(node.left, distance);
+    int[] right = dfs(node.right, distance);
+    for (int i = 1; i <= distance; i++) {
+      for (int j = 1; j <= distance - i; j++) {
+        count += left[i] * right[j];
+      }
+    }
+    int[] res = new int[MAX_DISTANCE + 1];
+    for (int i = 1; i < MAX_DISTANCE; i++) {
+      res[i + 1] = left[i] + right[i];
+    }
+    return res;
+  }
+}
+
+
+
+
+
+
+// User Template For C++
+class Solution {
+private:
+    int count = 0;
+    const int MAX_DISTANCE = 10;
+
+    vector<int> dfs(TreeNode* node, int distance) {
+        if (!node) return vector<int>(MAX_DISTANCE + 1, 0);
+        
+        if (!node->left && !node->right) {
+            vector<int> res(MAX_DISTANCE + 1, 0);
+            res[1] = 1;
+            return res;
+        }
+        
+        vector<int> left = dfs(node->left, distance);
+        vector<int> right = dfs(node->right, distance);
+        
+        for (int i = 1; i <= distance; i++) {
+            for (int j = 1; j <= distance - i; j++) {
+                count += left[i] * right[j];
+            }
+        }
+        
+        vector<int> res(MAX_DISTANCE + 1, 0);
+        for (int i = 1; i < MAX_DISTANCE; i++) {
+            res[i + 1] = left[i] + right[i];
+        }
+        
+        return res;
+    }
+
+public:
+    int countPairs(TreeNode* root, int distance) {
+        dfs(root, distance);
+        return count;
+    }
+};
+
+
+
+
+
+// User Template For Python
+class Solution:
+    def countPairs(self, root: TreeNode, distance: int) -> int:
+        self.count = 0
+        MAX_DISTANCE = 10
+
+        def dfs(node: TreeNode) -> List[int]:
+            if not node:
+                return [0] * (MAX_DISTANCE + 1)
+            
+            if not node.left and not node.right:
+                res = [0] * (MAX_DISTANCE + 1)
+                res[1] = 1
+                return res
+            
+            left = dfs(node.left)
+            right = dfs(node.right)
+            
+            for i in range(1, distance + 1):
+                for j in range(1, distance - i + 1):
+                    self.count += left[i] * right[j]
+            
+            res = [0] * (MAX_DISTANCE + 1)
+            for i in range(1, MAX_DISTANCE):
+                res[i + 1] = left[i] + right[i]
+            
+            return res
+
+        dfs(root)
+        return self.count
