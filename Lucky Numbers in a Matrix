@@ -1,0 +1,107 @@
+// User Template For Java
+
+class Solution {
+  public List<Integer> luckyNumbers(int[][] matrix) {
+    int N = matrix.length, M = matrix[0].length;
+    List<Integer> rowMin = new ArrayList<>();
+    for (int i = 0; i < N; i++) {
+      int rMin = Integer.MAX_VALUE;
+      for (int j = 0; j < M; j++) {
+        rMin = Math.min(rMin, matrix[i][j]);
+      }
+      rowMin.add(rMin);
+    }
+    List<Integer> colMax = new ArrayList<>();
+    for (int i = 0; i < M; i++) {
+      int cMax = Integer.MIN_VALUE;
+      for (int j = 0; j < N; j++) {
+        cMax = Math.max(cMax, matrix[j][i]);
+      }
+      colMax.add(cMax);
+    }
+    List<Integer> luckyNumbers = new ArrayList<>();
+    for (int i = 0; i < N; i++) {
+      for (int j = 0; j < M; j++) {
+        if (matrix[i][j] == rowMin.get(i) && matrix[i][j] == colMax.get(j)) {
+          luckyNumbers.add(matrix[i][j]);
+        }
+      }
+    }
+    return luckyNumbers;
+  }
+}
+
+
+
+
+// User Template For C++
+class Solution {
+public:
+    vector<int> luckyNumbers(vector<vector<int>>& matrix) {
+        int N = matrix.size(), M = matrix[0].size();
+
+        vector<int> rowMin;
+        for (int i = 0; i < N; i++) {
+
+            int rMin = INT_MAX;
+            for (int j = 0; j < M; j++) {
+                rMin = min(rMin, matrix[i][j]);
+            }
+            rowMin.push_back(rMin);
+        }
+
+        vector<int> colMax;
+        for (int i = 0; i < M; i++) {
+
+            int cMax = INT_MIN;
+            for (int j = 0; j < N; j++) {
+                cMax = max(cMax, matrix[j][i]);
+            }
+            colMax.push_back(cMax);
+        }
+
+        vector<int> luckyNumbers;
+        for (int i = 0; i < N; i++) {
+            for (int j = 0; j < M; j++) {
+                if (matrix[i][j] == rowMin[i] && matrix[i][j] == colMax[j]) {
+                    luckyNumbers.push_back(matrix[i][j]);
+                }
+            }
+        }
+
+        return luckyNumbers;
+    }
+};
+
+
+
+
+
+
+// User Template For Python
+class Solution:
+    def luckyNumbers(self, matrix):
+        N = len(matrix)
+        M = len(matrix[0])
+
+        rowMin = []
+        for i in range(N):
+            rMin = float('inf')
+            for j in range(M):
+                rMin = min(rMin, matrix[i][j])
+            rowMin.append(rMin)
+
+        colMax = []
+        for i in range(M):
+            cMax = float('-inf')
+            for j in range(N):
+                cMax = max(cMax, matrix[j][i])
+            colMax.append(cMax)
+
+        luckyNumbers = []
+        for i in range(N):
+            for j in range(M):
+                if matrix[i][j] == rowMin[i] and matrix[i][j] == colMax[j]:
+                    luckyNumbers.append(matrix[i][j])
+
+        return luckyNumbers
