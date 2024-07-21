@@ -1,0 +1,156 @@
+// User Template For Java
+
+class Solution {
+  public int[][] buildMatrix(
+    int k,
+    int[][] rowConditions,
+    int[][] colConditions ) {
+    List<Integer> orderRows = topoSort(rowConditions, k);
+    List<Integer> orderColumns = topoSort(colConditions, k);
+    if (orderRows.isEmpty() || orderColumns.isEmpty()) return new int[0][0];
+    int[][] matrix = new int[k][k];
+    for (int i = 0; i < k; i++) {
+      for (int j = 0; j < k; j++) {
+        if (orderRows.get(i).equals(orderColumns.get(j))) {
+          matrix[i][j] = orderRows.get(i); }}}
+    return matrix;}
+  private List<Integer> topoSort(int[][] edges, int n) {
+    List<List<Integer>> adj = new ArrayList<>();
+    for (int i = 0; i <= n; i++) {
+      adj.add(new ArrayList<>());}
+    for (int[] edge : edges) {
+      adj.get(edge[0]).add(edge[1]);  }
+    List<Integer> order = new ArrayList<>();
+    int[] visited = new int[n + 1];
+    boolean[] hasCycle = { false };
+    for (int i = 1; i <= n; i++) {
+      if (visited[i] == 0) {
+        dfs(i, adj, visited, order, hasCycle);
+        if (hasCycle[0]) return new ArrayList<>();}}
+    Collections.reverse(order);
+    return order; }
+  private void dfs(
+    int node,
+    List<List<Integer>> adj,
+    int[] visited,
+    List<Integer> order,
+    boolean[] hasCycle ) {
+    visited[node] = 1;
+    for (int neighbor : adj.get(node)) {
+      if (visited[neighbor] == 0) {
+        dfs(neighbor, adj, visited, order, hasCycle);
+        if (hasCycle[0]) return;
+      } else if (visited[neighbor] == 1) {
+        hasCycle[0] = true;
+        return;}}
+    visited[node] = 2;
+    order.add(node);}}
+
+
+
+
+
+
+
+// User Template For C++
+class Solution {
+public:
+    vector<vector<int>> buildMatrix(int k, vector<vector<int>>& rowConditions, vector<vector<int>>& colConditions) {
+        vector<vector<int>> rowGraph(k + 1), colGraph(k + 1);
+        for (auto& rc : rowConditions) {
+            rowGraph[rc[0]].push_back(rc[1]);
+        }
+        for (auto& cc : colConditions) {
+            colGraph[cc[0]].push_back(cc[1]);
+        }
+        
+        vector<int> rowOrder = topoSort(rowGraph, k);
+        vector<int> colOrder = topoSort(colGraph, k);
+        
+        if (rowOrder.empty() || colOrder.empty()) return {};
+        
+        vector<vector<int>> result(k, vector<int>(k, 0));
+        unordered_map<int, int> rowMap, colMap;
+        for (int i = 0; i < k; ++i) {
+            rowMap[rowOrder[i]] = i;
+            colMap[colOrder[i]] = i;
+        }
+        
+        for (int i = 1; i <= k; ++i) {
+            result[rowMap[i]][colMap[i]] = i;
+        }
+        
+        return result;
+    }
+    
+    vector<int> topoSort(vector<vector<int>>& graph, int k) {
+        vector<int> inDegree(k + 1, 0), order;
+        queue<int> q;
+        for (int i = 1; i <= k; ++i) {
+            for (int j : graph[i]) {
+                ++inDegree[j];
+            }
+        }
+        for (int i = 1; i <= k; ++i) {
+            if (inDegree[i] == 0) q.push(i);
+        }
+        while (!q.empty()) {
+            int node = q.front(); q.pop();
+            order.push_back(node);
+            for (int adj : graph[node]) {
+                if (--inDegree[adj] == 0) q.push(adj);
+            }
+        }
+        return order.size() == k ? order : vector<int>();
+    }
+};
+
+
+
+
+
+
+
+
+// User Template For Python
+class Solution(object):
+    def buildMatrix(self, k, rowConditions, colConditions):
+        rowGraph = defaultdict(list)
+        for u, v in rowConditions:
+            rowGraph[u].append(v)
+            
+        colGraph = defaultdict(list)
+        for u, v in colConditions:
+            colGraph[u].append(v)
+        
+        def topoSort(graph):
+            inDegree = {i: 0 for i in range(1, k + 1)}
+            for u in graph:
+                for v in graph[u]:
+                    inDegree[v] += 1
+            queue = deque([i for i in inDegree if inDegree[i] == 0])
+            order = []
+            while queue:
+                node = queue.popleft()
+                order.append(node)
+                for v in graph[node]:
+                    inDegree[v] -= 1
+                    if inDegree[v] == 0:
+                        queue.append(v)
+            return order if len(order) == k else []
+        
+        rowOrder = topoSort(rowGraph)
+        colOrder = topoSort(colGraph)
+        
+        if not rowOrder or not colOrder:
+            return []
+        
+        rowMap = {num: i for i, num in enumerate(rowOrder)}
+        colMap = {num: i for i, num in enumerate(colOrder)}
+        
+        result = [[0] * k for _ in range(k)]
+        for i in range(1, k + 1):
+            result[rowMap[i]][colMap[i]] = i
+        
+        return result
+        
