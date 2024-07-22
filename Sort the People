@@ -1,0 +1,63 @@
+// User Template For Java
+
+class Solution {
+  public String[] sortPeople(String[] names, int[] heights) {
+    Map<Integer, String> map = new HashMap<>();
+    for (int i = 0; i < names.length; i++) {
+      map.put(heights[i], names[i]);
+    }    
+    Arrays.sort(heights);
+    String[] result = new String[heights.length];
+    int index = 0;
+    for (int i = heights.length - 1; i >= 0; i--) {
+      result[index] = map.get(heights[i]);
+      index++;
+    }
+    return result;
+  }
+}
+
+
+
+
+
+
+
+// User Template For C++
+class Solution {
+public:
+    vector<string> sortPeople(vector<string>& names, vector<int>& heights) {
+        unordered_map<int, string> map;
+        for (int i = 0; i < names.size(); i++) {
+            map[heights[i]] = names[i];
+        }
+        
+        sort(heights.begin(), heights.end());
+        vector<string> result(heights.size());
+        int index = 0;
+        
+        for (int i = heights.size() - 1; i >= 0; i--) {
+            result[index] = map[heights[i]];
+            index++;
+        }
+        
+        return result;
+    }
+};
+
+
+
+
+
+
+// User Template For Python3
+class Solution:
+    def sortPeople(self, names: list[str], heights: list[int]) -> list[str]:
+        height_to_name = {heights[i]: names[i] for i in range(len(names))}
+        heights.sort()
+        result = []
+        
+        for height in reversed(heights):
+            result.append(height_to_name[height])
+        
+        return result
