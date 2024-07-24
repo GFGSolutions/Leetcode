@@ -1,0 +1,104 @@
+// User Template For Java
+
+import java.util.Arrays;
+class Solution {
+  public int[] sortJumbled(int[] mapping, int[] nums) {
+    int n = nums.length;
+    int[][] mappedWithIndex = new int[n][2];
+    for (int i = 0; i < n; ++i) {
+      int originalNum = nums[i]; 
+      int mappedNum = originalNum == 0 ? mapping[0] : 0; 
+      int placeValue = 1; 
+      while (originalNum > 0) {
+        int digit = originalNum % 10; 
+        mappedNum += placeValue * mapping[digit]; 
+        placeValue *= 10; 
+        originalNum /= 10;
+      }
+      mappedWithIndex[i] = new int[] {mappedNum, i};
+    }
+    Arrays.sort(mappedWithIndex, (a, b) -> 
+      a[0] == b[0] ? a[1] - b[1] : a[0] - b[0]); 
+    int[] sortedArray = new int[n];
+    for (int i = 0; i < n; ++i) {
+      sortedArray[i] = nums[mappedWithIndex[i][1]];
+    }
+    return sortedArray;
+  }
+}
+
+
+
+
+
+
+// User Template For C++
+class Solution {
+public:
+    vector<int> sortJumbled(vector<int>& mapping, vector<int>& nums) {
+        int numsSize = nums.size(); // Number of elements in nums
+        vector<pair<int, int>> mappedAndIndexPairs(numsSize); // Pair to store the mapped value and original index
+
+        // Transform each number as per the mapping and associate it with its original index
+        for (int i = 0; i < numsSize; ++i) {
+            int originalNum = nums[i];
+            int mappedNum = originalNum == 0 ? mapping[0] : 0; // If the number is 0, directly map it
+            int placeValue = 1; // Represents the place value in the mapped number
+
+            // Decompose the number into its digits and transform it according to the mapping
+            while (originalNum > 0) {
+                int digit = originalNum % 10; // Get the last digit
+                mappedNum += placeValue * mapping[digit]; // Map the digit and add to the mapped number
+                originalNum /= 10; // Remove the last digit from the original number
+                placeValue *= 10; // Move to the next place value
+            }
+
+            // Save the pair of mapped number and original index
+            mappedAndIndexPairs[i] = {mappedNum, i};
+        }
+
+        // Sort the pairs. The order is firstly by the mapped number, and then by the original index
+        sort(mappedAndIndexPairs.begin(), mappedAndIndexPairs.end());
+
+        // Extract the numbers from the sorted pairs, preserving the new order
+        vector<int> sortedNums;
+        for (auto& pair : mappedAndIndexPairs) {
+            sortedNums.push_back(nums[pair.second]);
+        }
+
+        // Return the sorted numbers as per the jumbled mapping order
+        return sortedNums;
+    }
+};
+
+
+
+
+
+// User Template For Python3
+class Solution:
+    def sortJumbled(self, mapping: List[int], nums: List[int]) -> List[int]:
+        # List to hold tuples of the mapped value and its original index
+        mapped_with_index = []
+      
+        # Iterate over the input numbers' list
+        for index, num in enumerate(nums):
+            # If the number is 0, get the mapped value for 0, else start with 0
+            mapped_num = mapping[0] if num == 0 else 0
+            power_of_ten = 1  # To keep track of the decimal place
+          
+            # Decompose the number into digits and map using the provided mapping
+            while num:
+                num, digit = divmod(num, 10)
+                # Map the digit, adjust decimal place and add to the mapped number
+                mapped_num = mapping[digit] * power_of_ten + mapped_num
+                power_of_ten *= 10  # Increase the decimal place
+          
+            # Append the tuple of mapped number and original index to the list
+            mapped_with_index.append((mapped_num, index))
+      
+        # Sort the list according to the mapped numbers, stable for identical values
+        mapped_with_index.sort()
+      
+        # Reconstruct the sorted list using the original indices
+        return [nums[i] for _, i in mapped_with_index]
