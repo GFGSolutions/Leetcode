@@ -1,0 +1,120 @@
+// User Template For Java
+
+class Solution {
+  public int findTheCity(int n, int[][] edges, int distanceThreshold) {
+    int[][] distance = new int[n][n];
+    for (int i = 0; i < n; i++) {
+      Arrays.fill(distance[i], 1000000000); 
+      distance[i][i] = 0;
+    }
+    for (int[] edge : edges) {
+      distance[edge[0]][edge[1]] = edge[2];
+      distance[edge[1]][edge[0]] = edge[2];
+    }
+    for (int k = 0; k < n; k++) {
+      for (int i = 0; i < n; i++) {
+        for (int j = 0; j < n; j++) {
+          distance[i][j] = Math.min(distance[i][j], distance[i][k] + distance[k][j]);
+        }
+      }
+    }
+    int ans = -1;
+    int mini = Integer.MAX_VALUE;
+    int[] reachable = new int[n];
+    for (int i = 0; i < n; i++) {
+      int count = 0;
+      for (int j = 0; j < n; j++) {
+        if (i != j && distance[i][j] <= distanceThreshold) {
+          count++;
+        }
+      }
+      reachable[i] = count;
+      if (count <= mini) {
+        mini = count;
+        ans = i;
+      }
+    }
+    return ans;
+  }
+}
+
+
+
+
+
+// User Template For C++
+public:
+    int findTheCity(int n, vector<vector<int>>& edges, int distanceThreshold) {
+        vector<vector<int>> distance(n, vector<int>(n, 1000000000)); // Initialize distance matrix with infinity
+
+        for (int i = 0; i < n; ++i) {
+            distance[i][i] = 0; // Distance to itself is 0
+        }
+
+        for (auto& edge : edges) {
+            distance[edge[0]][edge[1]] = edge[2];
+            distance[edge[1]][edge[0]] = edge[2];
+        }
+
+        // Floyd-Warshall algorithm to find all-pairs shortest path
+        for (int k = 0; k < n; ++k) {
+            for (int i = 0; i < n; ++i) {
+                for (int j = 0; j < n; ++j) {
+                    distance[i][j] = min(distance[i][j], distance[i][k] + distance[k][j]);
+                }
+            }
+        }
+
+        int ans = -1;
+        int mini = INT_MAX;
+        for (int i = 0; i < n; ++i) {
+            int count = 0;
+            for (int j = 0; j < n; ++j) {
+                if (i != j && distance[i][j] <= distanceThreshold) {
+                    ++count;
+                }
+            }
+            if (count <= mini) {
+                mini = count;
+                ans = i;
+            }
+        }
+
+        return ans;
+    }
+};
+
+
+
+
+
+// User Template For Python
+class Solution:
+    def findTheCity(self, n: int, edges: list[list[int]], distanceThreshold: int) -> int:
+        distance = [[float('inf')] * n for _ in range(n)] # Initialize distance matrix with infinity
+
+        for i in range(n):
+            distance[i][i] = 0 # Distance to itself is 0
+
+        for edge in edges:
+            distance[edge[0]][edge[1]] = edge[2]
+            distance[edge[1]][edge[0]] = edge[2]
+
+        # Floyd-Warshall algorithm to find all-pairs shortest path
+        for k in range(n):
+            for i in range(n):
+                for j in range(n):
+                    distance[i][j] = min(distance[i][j], distance[i][k] + distance[k][j])
+
+        ans = -1
+        mini = float('inf')
+        for i in range(n):
+            count = 0
+            for j in range(n):
+                if i != j and distance[i][j] <= distanceThreshold:
+                    count += 1
+            if count <= mini:
+                mini = count
+                ans = i
+
+        return ans
