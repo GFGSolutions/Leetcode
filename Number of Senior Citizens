@@ -1,0 +1,48 @@
+// User Template For Java
+
+class Solution {
+  public int countSeniors(String[] details) {
+    int ans = 0;
+    for (var x : details) {
+      int age = Integer.parseInt(x.substring(11, 13));
+      if (age > 60) {
+        ++ans;
+      }
+    }
+    return ans;
+  }
+}
+
+
+
+
+
+// User Template For C++
+class Solution {
+public:
+    int countSeniors(vector<string>& details) {
+        int ans = 0;
+        for (auto& x : details) {
+            int age = stoi(x.substr(11, 2));
+            ans += age > 60;
+        }
+        return ans;
+    }
+};
+
+
+
+
+
+// User Template For Python
+class Solution(object):
+    def countSeniors(self, details):
+        """
+        :type details: List[str]
+        :rtype: int
+        """
+        counter = 0
+        for i in details:
+            if int(i[11:13]) > 60:
+                counter+=1
+        return counter
