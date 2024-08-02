@@ -16,3 +16,36 @@ class Solution {
     return k - mx;
   }
 }
+
+
+
+// User Template For C++
+class Solution {
+public:
+    int minSwaps(vector<int>& nums) {
+        int k = accumulate(nums.begin(), nums.end(), 0);
+        int n = nums.size();
+        int cnt = accumulate(nums.begin(), nums.begin() + k, 0);
+        int mx = cnt;
+        for (int i = k; i < n + k; ++i) {
+            cnt += nums[i % n] - nums[(i - k + n) % n];
+            mx = max(mx, cnt);
+        }
+        return k - mx;
+    }
+};
+
+
+
+
+// User Template For Python
+class Solution:
+    def minSwaps(self, nums: List[int]) -> int:
+        k = nums.count(1)
+        mx = cnt = sum(nums[:k])
+        n = len(nums)
+        for i in range(k, n + k):
+            cnt += nums[i % n]
+            cnt -= nums[(i - k + n) % n]
+            mx = max(mx, cnt)
+        return k - mx
