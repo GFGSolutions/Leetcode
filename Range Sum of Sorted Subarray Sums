@@ -1,0 +1,66 @@
+// User Template For Java
+
+class Solution {
+  public int rangeSum(int[] nums, int n, int left, int right) {
+    List<Integer> arr = new ArrayList<>();
+    for (int i = 0; i < n; i++) {
+      int prefix = 0;
+      for (int j = i; j < n; j++) {
+        prefix += nums[j];
+        arr.add(prefix);
+      }
+    }
+    Collections.sort(arr);
+    int result = 0;
+    int MOD = 1000000007;
+    for (int i = left - 1; i < right; i++) {
+      result = (result + arr.get(i)) % MOD;
+    }
+    return result;
+  }
+}
+
+
+
+
+
+
+// User Template For C++
+class Solution {
+public:
+    int rangeSum(vector<int>& nums, int n, int left, int right) {
+        vector<int> arr;
+        for (int i = 0; i < n; ++i) {
+            int prefix = 0;
+            for (int j = i; j < n; ++j) {
+                prefix += nums[j];
+                arr.push_back(prefix);
+            }
+        }
+        sort(arr.begin(), arr.end());
+        int result = 0;
+        int MOD = 1000000007;
+        for (int i = left - 1; i < right; ++i) {
+            result = (result + arr[i]) % MOD;
+        }
+        return result;
+    }
+};
+
+
+
+
+
+// User Template For Python
+class Solution(object):
+    def rangeSum(self, nums, n, left, right):
+        arr = []
+        i = 0
+        while i < n:
+            prefix = 0
+            for j in range(i,n):
+                prefix += nums[j]
+                arr.append(prefix)
+            i += 1
+        arr.sort()
+        return sum(arr[left-1:right]) % 1000000007
