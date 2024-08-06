@@ -1,0 +1,69 @@
+// User Template For Java
+
+class Solution {
+  public int minimumPushes(String word) {
+    int[] letterFrequency = new int[26];
+    for (char c : word.toCharArray()) {
+      letterFrequency[c - 'a']++;
+    }
+    Integer[] sortedFreq = new Integer[26];
+    for (int i = 0; i < 26; i++) {
+      sortedFreq[i] = letterFrequency[i];
+    }
+    Arrays.sort(sortedFreq, Collections.reverseOrder());
+    int totalPresses = 0;
+    for (int i = 0; i < 26; i++) {
+      if (sortedFreq[i] == 0) break;
+      totalPresses += (i / 8 + 1) * sortedFreq[i];
+    }
+    return totalPresses;
+  }
+}
+
+
+
+
+
+// User Template For C++
+class Solution {
+public:
+    int minimumPushes(string word) {
+        vector<int> letterFreq(26, 0);
+        for (char c : word) {
+            letterFreq[c - 'a']++;
+        }
+        
+        sort(letterFreq.rbegin(), letterFreq.rend());
+        
+        int totalPresses = 0;
+        for (int i = 0; i < 26; i++) {
+            if (letterFreq[i] == 0) break;
+            totalPresses += (i / 8 + 1) * letterFreq[i];
+        }
+        
+        return totalPresses;
+    }
+};
+
+
+
+
+
+// User Template For Python
+class Solution:
+    def minimumPushes(self, input_text: str) -> int:
+        # Count letter occurrences
+        letter_counts = [0] * 26
+        for char in input_text:
+            letter_counts[ord(char) - ord('a')] += 1
+        
+        # Sort counts in descending order
+        sorted_counts = sorted(letter_counts, reverse=True)
+        
+        total_key_presses = 0
+        for index, count in enumerate(sorted_counts):
+            if count == 0:
+                break
+            total_key_presses += (index // 8 + 1) * count
+        
+        return total_key_presses
