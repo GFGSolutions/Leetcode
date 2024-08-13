@@ -1,0 +1,83 @@
+// User Template For Java
+
+class Solution {
+  public List<List<Integer>> combinationSum2(int[] candidates, int target) {
+    List < List < Integer >> ans = new ArrayList < > ();
+    Arrays.sort(candidates);
+    findCombinations(0, candidates, target, ans, new ArrayList < > ());
+    return ans;
+  }
+  static void findCombinations(int ind, int[] arr, int target, List < List < Integer >> ans, List < Integer > ds) {
+    if (target == 0) {
+      ans.add(new ArrayList < > (ds));
+      return;
+    }
+    for (int i = ind; i < arr.length; i++) {
+      if (i > ind && arr[i] == arr[i - 1]) continue;
+      if (arr[i] > target) break;
+
+      ds.add(arr[i]);
+      findCombinations(i + 1, arr, target - arr[i], ans, ds);
+      ds.remove(ds.size() - 1);
+    }
+  }
+}
+
+
+
+
+
+// User Template For C++
+class Solution {
+public:
+    vector<vector<int>> combinationSum2(vector<int>& candidates, int target) {
+        sort(candidates.begin(), candidates.end());
+        vector < vector < int >> ans;
+        vector < int > ds;
+        findCombination(0, target, candidates, ans, ds);
+        return ans;
+    }
+    void findCombination(int ind, int target, vector < int > & arr, vector < vector < int >> & ans, vector < int > & ds) {
+        if (target == 0) {
+            ans.push_back(ds);
+            return;
+        }
+        for (int i = ind; i < arr.size(); i++) {
+            if (i > ind && arr[i] == arr[i - 1]) continue;
+            if (arr[i] > target) break;
+            ds.push_back(arr[i]);
+            findCombination(i + 1, target - arr[i], arr, ans, ds);
+            ds.pop_back();
+        }
+    }
+};
+
+
+
+
+
+// User Template For Python
+class Solution(object):
+    def combinationSum2(self, candidates, target):
+        ans = []
+        ds = []
+        candidates.sort()
+
+
+        def findCombination(ind, target):
+            if target == 0:
+                ans.append(ds[:])
+                return
+            for i in range(ind, len(candidates)):
+                if i > ind and candidates[i] == candidates[i - 1]:
+                    continue
+                if candidates[i] > target:
+                    break
+                ds.append(candidates[i])
+                findCombination(i + 1, target - candidates[i])
+                ds.pop()
+
+
+        findCombination(0, target)
+        return ans
+        
