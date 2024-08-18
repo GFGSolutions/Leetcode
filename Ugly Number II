@@ -1,0 +1,76 @@
+// User Template For Java
+
+class Solution {
+  public int nthUglyNumber(int n) {
+    int[] primes = {2, 3, 5};
+    PriorityQueue<Long> uglyHeap = new PriorityQueue<>();
+    HashSet<Long> visited = new HashSet<>(); 
+    uglyHeap.add(1L);
+    visited.add(1L);
+    long curr = 1L;
+    for (int i = 0; i < n; i++) {
+      curr = uglyHeap.poll();
+      for (int prime : primes) {
+        long new_ugly = curr * prime;
+        if (!visited.contains(new_ugly)) {
+          uglyHeap.add(new_ugly);
+          visited.add(new_ugly);
+        }
+      }
+    }
+    return (int)curr;
+  }
+}
+
+
+
+// User Template For C++
+class Solution {
+public:
+    int nthUglyNumber(int n) {
+        vector<int> primes = {2, 3, 5};
+        priority_queue<long, vector<long>, greater<long>> uglyHeap;
+        unordered_set<long> visited;
+        
+        uglyHeap.push(1);
+        visited.insert(1);
+        
+        long curr;
+        for (int i = 0; i < n; ++i) {
+            curr = uglyHeap.top();
+            uglyHeap.pop();
+            for (int prime : primes) {
+                long new_ugly = curr * prime;
+                if (visited.find(new_ugly) == visited.end()) {
+                    uglyHeap.push(new_ugly);
+                    visited.insert(new_ugly);
+                }
+            }
+        }
+        return (int)curr;
+    }
+};
+
+
+
+
+
+// User Template For Python
+class Solution(object):
+    def nthUglyNumber(self, n):
+        primes = [2,3,5]
+        uglyHeap = [1]
+        visited = set()
+        visited.add(1)
+        for _ in range(n):
+            curr = heappop(uglyHeap)
+            for prime in primes:
+                new_ugly = curr * prime
+                if new_ugly not in visited:
+                    heappush(uglyHeap, new_ugly)
+                    visited.add(new_ugly)
+        return curr
+
+
+
+
