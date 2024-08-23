@@ -1,0 +1,147 @@
+// User Template For Java
+
+class Solution {
+  public String fractionAddition(String expression) {
+    int n1 = 0, d1 = 1; 
+    int n = expression.length(), i = 0;
+    while (i < n) {
+      boolean negative = expression.charAt(i) == '-';
+      if (expression.charAt(i) == '+' || expression.charAt(i) == '-') i++;
+      int n2 = 0, d2 = 0;
+      while (i < n && Character.isDigit(expression.charAt(i)))
+        n2 = n2 * 10 + (expression.charAt(i++) - '0');
+      if (i < n && expression.charAt(i) == '/') i++;
+      while (i < n && Character.isDigit(expression.charAt(i)))
+        d2 = d2 * 10 + (expression.charAt(i++) - '0');
+      if (negative) n2 = -n2;
+      int[] result = calculate(n1, d1, n2, d2);
+      n1 = result[0];
+      d1 = result[1];
+    }
+    return n1 + "/" + d1; }
+  private int gcd(int a, int b) {
+    return b == 0 ? Math.abs(a) : gcd(b, a % b); }
+  private int lcm(int a, int b) {
+    return Math.abs(a * b) / gcd(a, b); }
+  private void reduce(int[] fraction) {
+    int GCD = gcd(fraction[0], fraction[1]);
+    fraction[0] /= GCD;
+    fraction[1] /= GCD; }
+  private int[] calculate(int n1, int d1, int n2, int d2) {
+    int lcmDenominator = lcm(d1, d2);
+    int adjustedNum1 = n1 * (lcmDenominator / d1);
+    int adjustedNum2 = n2 * (lcmDenominator / d2);
+    int numerator = adjustedNum1 + adjustedNum2;
+    int denominator = lcmDenominator;
+    int[] result = new int[]{numerator, denominator};
+    reduce(result);
+    return result;
+  }
+}
+
+
+
+
+
+// User Template For C++
+class Solution {
+public:
+    string fractionAddition(string expression) {
+        int n1 = 0, d1 = 1;
+        int i = 0, n = expression.length();
+        while (i < n) {
+            bool negative = expression[i] == '-'; // Current fraction is negative
+            if (expression[i] == '+' || expression[i] == '-') i++;
+            // Get Numerator
+            int n2 = 0, d2 = 0;
+            while (i < n && isdigit(expression[i]))
+                n2 = n2 * 10 + expression[i++] - '0';
+            // Skip '/'
+            if (i < n && expression[i] == '/') i++;
+            // Get Denominator
+            while (i < n && isdigit(expression[i]))
+                d2 = d2 * 10 + expression[i++] - '0';
+            // Change sign
+            if (negative) n2 = -n2;
+            // Calculate the result fraction
+            string res = calculate(n1, d1, n2, d2);
+        }
+        return to_string(n1) + "/" + to_string(d1);
+    }
+
+private:
+    // Calculate the GCD
+    int gcd(int a, int b) {
+        return b == 0 ? abs(a) : gcd(b, a % b);
+    }
+    // Calculate the LCM
+    int lcm(int a, int b) {
+        return abs(a * b) / gcd(a, b);
+    }
+    // Reduces a fraction
+    void reduce(int& numerator, int& denominator) {
+        int GCD = gcd(numerator, denominator);
+        numerator /= GCD;
+        denominator /= GCD;
+    }
+    // Adds or subtracts two fractions and updates the first fraction with the result
+    string calculate(int& a, int& b, int c, int d) {
+        int LCM = lcm(b, d);
+        int num1 = a * (LCM / b);
+        int num2 = c * (LCM / d);
+        a = num1 + num2;
+        b = LCM;
+        reduce(a, b);
+        return to_string(a) + "/" + to_string(b);
+    }
+};
+
+
+
+
+
+// User Template For Python
+class Solution:
+    def fractionAddition(self, expression: str) -> str:
+        n1, d1 = 0, 1  # Initialize the first fraction as 0/1
+        i, n = 0, len(expression)
+        while i < n:
+            # Determine if the current fraction is negative
+            negative = expression[i] == '-'
+            if expression[i] in '+-': i += 1
+            # Parse the numerator
+            n2, d2 = 0, 0
+            while i < n and expression[i].isdigit():
+                n2 = n2 * 10 + int(expression[i])
+                i += 1
+            # Skip the '/' character
+            if i < n and expression[i] == '/': i += 1
+            # Parse the denominator
+            while i < n and expression[i].isdigit():
+                d2 = d2 * 10 + int(expression[i])
+                i += 1
+            # Apply the sign to the numerator
+            if negative: n2 = -n2
+            # Calculate the result fraction
+            n1, d1 = self.calculate(n1, d1, n2, d2)
+        return f"{n1}/{d1}"
+    
+    def gcd(self, a: int, b: int) -> int:
+        return abs(a) if b == 0 else self.gcd(b, a % b)
+    
+    def lcm(self, a: int, b: int) -> int:
+        return abs(a * b) // self.gcd(a, b)
+    
+    def reduce(self, numerator: int, denominator: int) -> tuple[int, int]:
+        GCD = self.gcd(numerator, denominator)
+        return numerator // GCD, denominator // GCD
+    
+    def calculate(self, n1: int, d1: int, n2: int, d2: int) -> tuple[int, int]:
+        lcmDenominator = self.lcm(d1, d2)
+        adjustedNum1 = n1 * (lcmDenominator // d1)
+        adjustedNum2 = n2 * (lcmDenominator // d2)
+
+        numerator = adjustedNum1 + adjustedNum2
+        denominator = lcmDenominator
+
+        return self.reduce(numerator, denominator)
