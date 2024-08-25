@@ -1,0 +1,50 @@
+// User Template For Java
+
+class Solution {
+  public List<Integer> postorderTraversal(TreeNode root) {
+    List<Integer> result = new ArrayList<>();
+    fun(root,result);
+    return result;
+  }
+  private void fun(TreeNode root, List<Integer> result){
+    if(root != null){
+      fun(root.left,result);
+      fun(root.right,result);
+      result.add(root.val);
+    }
+  }
+}
+
+
+
+
+
+// User Template For C++
+class Solution {
+public:
+    vector<int> num={};
+    vector<int> postorderTraversal(TreeNode* root) {
+        if (root==nullptr)
+            return num;
+        postorderTraversal(root->left);
+        postorderTraversal(root->right);
+        num.push_back(root->val);
+        return num;
+    }
+};
+
+
+
+
+// User Template For Python
+class Solution:
+    def postorderTraversal(self, root: Optional[TreeNode]) -> List[int]:
+        num=[]
+        def f(root):
+            if root==None: return num
+            f(root.left)
+            f(root.right)
+            num.append(root.val)
+            return num
+        return f(root)
+        `
