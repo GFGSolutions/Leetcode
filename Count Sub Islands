@@ -1,0 +1,148 @@
+// User Template For Java
+
+class Solution {
+  int m; 
+  int n; 
+  boolean isSubIsland;
+  public void dfs(int[][] grid1, int[][] grid2, int i, int j) {
+    if (i < 0 || i == m || j < 0 || j == n || grid2[i][j] == 0) return;
+    if (grid1[i][j] != grid2[i][j]) {
+      isSubIsland = false;
+    }
+    grid2[i][j] = 0;
+    dfs(grid1, grid2, i + 1, j); 
+    dfs(grid1, grid2, i - 1, j); 
+    dfs(grid1, grid2, i, j + 1); 
+    dfs(grid1, grid2, i, j - 1); 
+  }
+  public int countSubIslands(int[][] grid1, int[][] grid2) {
+    m = grid1.length; 
+    n = grid1[0].length; 
+    int subIslandCount = 0; 
+    for (int i = 0; i < m; i++) {
+      for (int j = 0; j < n; j++) {
+        if (grid2[i][j] == 1) {
+          isSubIsland = true; 
+          dfs(grid1, grid2, i, j); 
+          if (isSubIsland) {
+            subIslandCount++; 
+          }
+        }
+      }
+    }
+    return subIslandCount; 
+  }
+}
+
+
+
+
+// User Template For C++
+class Solution {
+public:
+    int r, c;  // Number of rows and columns in the grid
+    const int d[5] = {0, 1, 0, -1, 0};  // Directions array for traversing up, right, down, and left
+
+    // Helper function to check if a cell (i, j) is outside the grid boundaries
+    inline bool outside(int i, int j) {
+        return i < 0 || i >= r || j < 0 || j >= c;
+    }
+
+    // Depth-First Search (DFS) to explore islands in grid2 and check if they are sub-islands of grid1
+    bool dfs(int i, int j, int mark, vector<vector<int>>& grid1, vector<vector<int>>& grid2) {
+        // If the current cell in grid1 is not land, return false (not a sub-island)
+        if (grid1[i][j] != 1) return false;
+
+        // Mark the current cell in grid2 as visited with a unique marker
+        grid2[i][j] = mark;
+
+        bool isSub = true;  // Assume the island is a sub-island until proven otherwise
+
+        // Traverse in all four possible directions
+        for (int a = 0; a < 4; a++) {
+            int s = i + d[a], t = j + d[a + 1];  // Calculate the next cell coordinates
+
+            // If the next cell is outside the grid or already visited, skip it
+            if (outside(s, t) || grid2[s][t] != 1) continue;
+
+            // If the next cell in grid1 is not land, mark the island as not a sub-island
+            if (grid1[s][t] != 1) isSub = false;
+
+            // Recursively continue DFS; if any part of the island is not a sub-island, mark it as false
+            if (!dfs(s, t, mark, grid1, grid2)) 
+                isSub = false;
+        }
+
+        return isSub;  // Return true if the whole island is a sub-island, otherwise false
+    }
+
+    int countSubIslands(vector<vector<int>>& grid1, vector<vector<int>>& grid2) {
+        r = grid1.size();  // Number of rows in the grid
+        c = grid1[0].size();  // Number of columns in the grid
+        int cnt = 0, mark = 2;  // Counter for sub-islands and marker for visited cells
+
+        // Iterate over each cell in grid2
+        for (int i = 0; i < r; i++) {
+            for (int j = 0; j < c; j++) {
+                // If a cell is part of an island (land) in grid2, start a DFS
+                if (grid2[i][j] == 1) {
+                    // If the DFS confirms it as a sub-island, increment the count
+                    cnt += dfs(i, j, mark++, grid1, grid2);
+                }
+            }
+        }
+
+        return cnt;  // Return the total count of sub-islands
+    }
+};
+
+
+
+auto init = []()
+{ 
+    ios::sync_with_stdio(0);
+    cin.tie(0);
+    cout.tie(0);
+    return 'c';
+}();
+
+
+
+
+
+
+// User Template For Python
+class Solution:
+    def countSubIslands(self, grid1: List[List[int]], grid2: List[List[int]]) -> int:
+        if not grid1 or not grid1[0] or not grid2 or not grid2[0]:
+            return 0
+
+        ROWS, COLS = len(grid1), len(grid1[0])
+        DIRECTIONS = [(1, 0), (-1, 0), (0, 1), (0, -1)]
+        island_count = 0
+
+        def dfs_explore(r, c):
+            if r < 0 or r >= ROWS or c < 0 or c >= COLS or grid2[r][c] == 0:
+                return True 
+            
+            # Mark cell as visited
+            grid2[r][c] = 0
+
+            # Disqualify as sub-island if cell is water in grid1
+            if grid1[r][c] == 0:
+                nonlocal is_sub_island 
+                is_sub_island = False
+
+            for dr, dc in DIRECTIONS:
+                dfs_explore(r + dr, c + dc)
+            
+            return is_sub_island
+
+        for row in range(ROWS):
+            for col in range(COLS):
+                if grid2[row][col] == 1:
+                    is_sub_island = True 
+                    if dfs_explore(row, col):
+                        island_count += 1
+
+        return island_count
