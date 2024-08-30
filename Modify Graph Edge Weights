@@ -1,0 +1,222 @@
+// User Template For Java
+
+class Solution {
+  public int[][] modifiedGraphEdges(int n, int[][] edges, int source, int destination, int target) {
+    List<int[]>[] adjacencyList = new ArrayList[n];
+    for (int i = 0; i < n; i++) {
+      adjacencyList[i] = new ArrayList<>(); }
+    for (int i = 0; i < edges.length; i++) {
+      int nodeA = edges[i][0], nodeB = edges[i][1];
+      adjacencyList[nodeA].add(new int[]{nodeB, i});
+      adjacencyList[nodeB].add(new int[]{nodeA, i}); }
+    int[][] distances = new int[n][2];
+    Arrays.fill(distances[source], 0); 
+    for (int i = 0; i < n; i++) {
+      if (i != source) {
+        distances[i][0] = distances[i][1] = Integer.MAX_VALUE; } }
+    runDijkstra(adjacencyList, edges, distances, source, 0, 0);
+    int difference = target - distances[destination][0];
+    if (difference < 0) return new int[][]{};
+    runDijkstra(adjacencyList, edges, distances, source, difference, 1);
+    if (distances[destination][1] < target) return new int[][]{}; 
+    for (int[] edge : edges) {
+      if (edge[2] == -1) edge[2] = 1; }
+    return edges; }
+  private void runDijkstra(List<int[]>[] adjacencyList, int[][] edges, int[][] distances, int source, int difference, int run) {
+    int n = adjacencyList.length;
+    PriorityQueue<int[]> priorityQueue = new PriorityQueue<>(Comparator.comparingInt(a -> a[1]));
+    priorityQueue.add(new int[]{source, 0});
+    distances[source][run] = 0;
+    while (!priorityQueue.isEmpty()) {
+      int[] current = priorityQueue.poll();
+      int currentNode = current[0];
+      int currentDistance = current[1];
+      if (currentDistance > distances[currentNode][run]) continue;
+      for (int[] neighbor : adjacencyList[currentNode]) {
+        int nextNode = neighbor[0], edgeIndex = neighbor[1];
+        int weight = edges[edgeIndex][2];
+        if (weight == -1) weight = 1;
+        if (run == 1 && edges[edgeIndex][2] == -1) {
+          int newWeight = difference + distances[nextNode][0] - distances[currentNode][1];
+          if (newWeight > weight) {
+            edges[edgeIndex][2] = weight = newWeight;  } }
+        if (distances[nextNode][run] > distances[currentNode][run] + weight) {
+          distances[nextNode][run] = distances[currentNode][run] + weight;
+          priorityQueue.add(new int[]{nextNode, distances[nextNode][run]});}}}}}
+
+
+
+
+
+
+// User Template For C++
+class Solution {
+public:
+    vector<vector<int>> modifiedGraphEdges(int n, vector<vector<int>>& edges, int source, int destination, int target) {
+        vector<vector<pair<int, int>>> adjacencyList(n);
+        for (int i = 0; i < edges.size(); i++) {
+            int nodeA = edges[i][0], nodeB = edges[i][1];
+            adjacencyList[nodeA].emplace_back(nodeB, i);
+            adjacencyList[nodeB].emplace_back(nodeA, i);
+        }
+
+        vector<vector<int>> distances(n, vector<int>(2, INT_MAX));
+        distances[source][0] = distances[source][1] = 0;
+
+        runDijkstra(adjacencyList, edges, distances, source, 0, 0);
+        int difference = target - distances[destination][0];
+        if (difference < 0) return {}; 
+        runDijkstra(adjacencyList, edges, distances, source, difference, 1);
+        if (distances[destination][1] < target) return {}; 
+
+        for (auto& edge : edges) {
+            if (edge[2] == -1) edge[2] = 1;
+        }
+        return edges;
+    }
+
+private:
+    void runDijkstra(const vector<vector<pair<int, int>>>& adjacencyList, vector<vector<int>>& edges, vector<vector<int>>& distances, int source, int difference, int run) {
+        int n = adjacencyList.size();
+        priority_queue<pair<int, int>, vector<pair<int, int>>, greater<>> priorityQueue;
+        priorityQueue.push({0, source});
+        distances[source][run] = 0;
+
+        while (!priorityQueue.empty()) {
+            auto [currentDistance, currentNode] = priorityQueue.top();
+            priorityQueue.pop();
+
+            if (currentDistance > distances[currentNode][run]) continue;
+
+            for (auto& neighbor : adjacencyList[currentNode]) {
+                int nextNode = neighbor.first, edgeIndex = neighbor.second;
+                int weight = edges[edgeIndex][2];
+
+                if (weight == -1) weight = 1; 
+
+                if (run == 1 && edges[edgeIndex][2] == -1) {
+                    int newWeight = difference + distances[nextNode][0] - distances[currentNode][1];
+                    if (newWeight > weight) {
+                        edges[edgeIndex][2] = weight = newWeight;
+                    }
+                }
+
+                if (distances[nextNode][run] > distances[currentNode][run] + weight) {
+                    distances[nextNode][run] = distances[currentNode][run] + weight;
+                    priorityQueue.push({distances[nextNode][run], nextNode});
+                }
+            }
+        }
+    }
+};
+static const auto mynameisbarryallen = []() {
+    std::ios::sync_with_stdio(false);
+    std::cin.tie(nullptr);
+    std::cout.tie(nullptr);
+    return 0;
+}();
+
+
+
+
+// User Template For Python
+import heapq
+import json
+import sys
+
+class Solution:
+    def modifiedGraphEdges(self, n, edges, source, destination, target):
+        # Create adjacency list for the graph
+        adjacency_list = [[] for _ in range(n)]
+        for i, (nodeA, nodeB, weight) in enumerate(edges):
+            # Store edges with their indices to facilitate edge weight updates
+            adjacency_list[nodeA].append((nodeB, i))
+            adjacency_list[nodeB].append((nodeA, i))
+
+        # Initialize distances array for two runs of Dijkstra's algorithm
+        distances = [[float('inf')] * 2 for _ in range(n)]
+        distances[source][0] = distances[source][1] = 0
+
+        # Run Dijkstra's algorithm for the first pass (with initial weights)
+        self.run_dijkstra(adjacency_list, edges, distances, source, 0, 0)
+        difference = target - distances[destination][0]
+
+        # If the shortest path is longer than the target, return an empty list
+        if difference < 0:
+            return []
+
+        # Run Dijkstra's algorithm for the second pass (with adjusted weights)
+        self.run_dijkstra(adjacency_list, edges, distances, source, difference, 1)
+
+        # If the shortest path with adjusted weights is still less than target, return empty list
+        if distances[destination][1] < target:
+            return []
+
+        # Set all unassigned edge weights (-1) to 1 as a default
+        for edge in edges:
+            if edge[2] == -1:
+                edge[2] = 1
+
+        return edges
+
+    def run_dijkstra(self, adjacency_list, edges, distances, source, difference, run):
+        n = len(adjacency_list)
+        # Min-heap priority queue to fetch the node with the smallest distance
+        priority_queue = [(0, source)]
+        distances[source][run] = 0
+
+        while priority_queue:
+            # Extract node with the minimum distance
+            current_distance, current_node = heapq.heappop(priority_queue)
+            # Skip processing if the current distance is not optimal
+            if current_distance > distances[current_node][run]:
+                continue
+
+            # Traverse all neighbors of the current node
+            for next_node, edge_index in adjacency_list[current_node]:
+                weight = edges[edge_index][2]
+
+                # If edge weight is unassigned (-1), assume it is 1 for now
+                if weight == -1:
+                    weight = 1
+
+                # Adjust edge weights on the second run to try and match the target path length
+                if run == 1 and edges[edge_index][2] == -1:
+                    new_weight = difference + distances[next_node][0] - distances[current_node][1]
+                    if new_weight > weight:
+                        edges[edge_index][2] = weight = new_weight
+
+                # Update the distance to next_node if a shorter path is found
+                if distances[next_node][run] > distances[current_node][run] + weight:
+                    distances[next_node][run] = distances[current_node][run] + weight
+                    heapq.heappush(priority_queue, (distances[next_node][run], next_node))
+
+def main():
+    # Read input from stdin
+    input_data = sys.stdin.read().strip()
+    lines = input_data.splitlines()
+    
+    # Calculate the number of test cases
+    num_test_cases = len(lines) // 5
+    results = []
+
+    for i in range(num_test_cases):
+        # Read input for each test case
+        n = int(lines[i * 5])
+        edges = json.loads(lines[i * 5 + 1])
+        source = int(lines[i * 5 + 2])
+        destination = int(lines[i * 5 + 3])
+        target = int(lines[i * 5 + 4])
+        
+        # Solve the test case
+        result = Solution().modifiedGraphEdges(n, edges, source, destination, target)
+        results.append(json.dumps(result))
+
+    # Write output to 'user.out' file
+    with open('user.out', 'w') as f:
+        for result in results:
+            f.write(f"{result}\n")
+
+if __name__ == "__main__":
+    main()
+    exit(0)
