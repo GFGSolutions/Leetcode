@@ -1,0 +1,98 @@
+// User Template For Java
+class Solution {
+  public int[][] construct2DArray(int[] original, int m, int n) {
+    int[][] result = new int[m][];
+    switch (m * n == original.length ? 1 : 0) {
+      case 1:
+        int i = 0;
+        while (i < m) {
+          result[i] = Arrays.copyOfRange(original, i * n, i * n + n);
+          i++;
+        }
+        break;
+      default:
+        return new int[0][0];
+    }
+    return result;
+  }
+}
+
+
+
+
+
+
+// User Template For C++
+class Solution {
+public:
+    vector<vector<int>> construct2DArray(vector<int>& original, int m, int n) {
+        vector<vector<int>> result(m);
+        int i;
+        switch (m * n == original.size() ? 1 : 0) {
+            case 1:
+                i = 0;
+                while (i < m) {
+                    result[i] = vector<int>(original.begin() + i * n, original.begin() + (i * n + n));
+                    i++;
+                }
+                break;
+            default:
+                return {};
+        }
+        return result;
+    }
+};
+
+static const auto kds = []() {
+    std::ios::sync_with_stdio(false);
+    std::cin.tie(nullptr);
+    std::cout.tie(nullptr);
+    return 0;
+}();
+
+
+
+
+
+
+
+// User Template For Python
+class Solution:
+    def construct2DArray(self, original, m, n):
+        result = [[] for _ in range(m)]
+        i = 0
+        match m * n == len(original):
+            case True:
+                while i < m:
+                    result[i] = original[i * n:(i * n + n)]
+                    i += 1
+            case _:
+                return []
+        return result
+
+def format_output(result):
+    return '[' + ','.join(str(row).replace(' ', '') for row in result) + ']'
+
+def kdsmain():
+    input_data = sys.stdin.read().strip()
+    lines = input_data.splitlines()
+    
+    num_test_cases = len(lines) // 3
+    results = []
+
+    for i in range(num_test_cases):
+        original = json.loads(lines[i*3])
+        m = int(lines[i*3 + 1])
+        n = int(lines[i*3 + 2])
+        
+        result = Solution().construct2DArray(original, m, n)
+        formatted_result = format_output(result)
+        results.append(formatted_result)
+
+    with open('user.out', 'w') as f:
+        for result in results:
+            f.write(f"{result}\n")
+
+if __name__ == "__main__":
+    kdsmain()
+    exit(0)
