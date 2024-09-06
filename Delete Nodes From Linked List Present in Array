@@ -1,0 +1,71 @@
+// User Template For Java
+
+class Solution {
+  public ListNode modifiedList(int[] nums, ListNode head) {
+    Set<Integer> toBeDel = new HashSet<>();
+    for(var num : nums)toBeDel.add(num);
+    ListNode dummyHead = new ListNode();
+    dummyHead.next = head;
+    ListNode curr = dummyHead, prev = dummyHead;
+    while(curr != null){
+      ListNode nextNode = curr.next;
+      if(toBeDel.contains(curr.val)){
+        prev.next = nextNode;
+      }else{
+        prev = curr;
+      }
+      curr = nextNode;
+    }
+    return dummyHead.next;
+  }
+}
+
+
+
+
+
+// User Template For C++
+class Solution {
+public:
+    ListNode* modifiedList(vector<int>& nums, ListNode* head) {
+        unordered_set<int> toBeDel;
+        for(auto & num : nums)toBeDel.insert(num);
+        ListNode *dummyHead = new ListNode();
+        dummyHead->next = head;
+        ListNode *curr = dummyHead, *prev = dummyHead;
+        while(curr != NULL){
+            ListNode *nextNode = curr->next;
+            if(toBeDel.count(curr->val) != 0){
+                prev->next = nextNode;
+            }else{
+                prev = curr;
+            }
+            curr = nextNode;
+        }
+        return dummyHead->next;
+    }
+};
+
+
+
+
+
+// User Template For Python3
+class Solution:
+    def modifiedList(self, nums: List[int], head: Optional[ListNode]) -> Optional[ListNode]:
+        if not head:
+            return None
+        num_set = set(nums)
+        dummy = ListNode(0)
+        dummy.next = head
+        prev, curr = dummy, head
+        while curr:
+            if curr.val in num_set:
+                prev.next = curr.next
+            else:
+                prev = curr
+            curr = curr.next
+        return dummy.next
+
+
+
