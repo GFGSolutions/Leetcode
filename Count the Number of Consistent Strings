@@ -1,0 +1,77 @@
+// User Template For Java
+
+class Solution {
+  public int countConsistentStrings(String allowed, String[] words) {
+    int arr[]=new int[26];
+    for(char i:allowed.toCharArray()){
+      arr[i-'a']=1;
+    }
+    int count=0;
+    for(String k:words){
+      count+=findConsistentString(arr,k);
+    }
+    return count;
+  }
+  public static int findConsistentString(int arr[],String k){
+    int flag=1;
+    for(int i=0;i<k.length();i++){
+      if(arr[k.charAt(i)-'a']==0){
+        flag=0;
+        break;
+      }
+    }
+    return flag;
+  }
+}
+
+
+
+
+
+
+
+// User Template For C++
+class Solution {
+public:
+    int countConsistentStrings(string allowed, vector<string>& words) {
+        int arr[26] = {0};
+        for (char c : allowed) {
+            arr[c - 'a'] = 1;
+        }
+        
+        int count = 0;
+        for (string word : words) {
+            int flag = 1;
+            for (char c : word) {
+                if (arr[c - 'a'] == 0) {
+                    flag = 0;
+                    break;
+                }
+            }
+            count += flag;
+        }
+        return count;
+    }
+};
+
+
+
+
+
+// User Template For Python3
+class Solution:
+    def countConsistentStrings(self, allowed: str, words: list[str]) -> int:
+        arr = [0] * 26
+        for c in allowed:
+            arr[ord(c) - ord('a')] = 1
+        
+        count = 0
+        for word in words:
+            flag = 1
+            for char in word:
+                if arr[ord(char) - ord('a')] == 0:
+                    flag = 0
+                    break
+            count += flag
+        return count
+
