@@ -1,0 +1,83 @@
+// User Template For Java
+
+class Solution {
+  public int[] xorQueries(int[] arr, int[][] queries) {
+    int n=arr.length;
+    int[] pre=new int[n];
+    pre[0]=arr[0];
+    for(int i=1;i<n;i++) {
+      pre[i]=pre[i-1]^arr[i];
+    }
+    int[] res=new int[queries.length];
+    for(int k=0;k<queries.length;k++) {
+      int i=queries[k][0];
+      int j=queries[k][1];
+      if(i==0) {
+        res[k]=pre[j];
+      } else {
+        res[k]=pre[j]^pre[i-1];
+      }
+    }
+    return res;
+  }
+}
+
+
+
+
+
+// User Template For C++
+class Solution {
+public:
+    vector<int> xorQueries(vector<int>& arr, vector<vector<int>>& queries) {
+        int n = arr.size();
+        vector<int> pre(n);
+        pre[0] = arr[0];
+        
+        // Compute prefix XOR array
+        for (int i = 1; i < n; ++i) {
+            pre[i] = pre[i - 1] ^ arr[i];
+        }
+        
+        std::vector<int> res(queries.size());
+        
+        // Answer each query
+        for (int k = 0; k < queries.size(); ++k) {
+            int i = queries[k][0];
+            int j = queries[k][1];
+            if (i == 0) {
+                res[k] = pre[j];
+            } else {
+                res[k] = pre[j] ^ pre[i - 1];
+            }
+        }
+        
+        return res;
+    }
+};
+
+
+
+
+// User Template For Python
+class Solution(object):
+    def xorQueries(self, arr, queries):
+        n = len(arr)
+        pre = [0] * n
+        pre[0] = arr[0]
+        
+        # Compute prefix XOR array
+        for i in range(1, n):
+            pre[i] = pre[i - 1] ^ arr[i]
+        
+        res = []
+        
+        # Answer each query
+        for left, right in queries:
+            if left == 0:
+                res.append(pre[right])
+            else:
+                res.append(pre[right] ^ pre[left - 1])
+        
+        return res
+        
