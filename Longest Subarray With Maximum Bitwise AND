@@ -1,0 +1,77 @@
+// User Template For Java
+
+class Solution {
+  public int longestSubarray(int[] nums) {
+    int maxBitwiseAnd = Integer.MIN_VALUE;
+    for (int num : nums) {
+      maxBitwiseAnd = Math.max(maxBitwiseAnd, num); }
+    int maxi = 1;
+    int count = 0;
+    int i = 0;
+    while (i < nums.length) {
+      if (nums[i] == maxBitwiseAnd) {
+        while (i < nums.length && nums[i++] == maxBitwiseAnd) {
+          count++; }
+        maxi = Math.max(maxi, count);
+        count = 0;
+      } else {
+        i++;
+      }
+    }
+    return maxi;
+  }
+}
+
+
+
+
+
+
+// User Template For C++
+class Solution {
+public:
+    int longestSubarray(vector<int>& nums) {
+        ios_base::sync_with_stdio(false);
+        cin.tie(0);
+        
+        int maxBitwiseAnd = *max_element(nums.begin(),nums.end());
+        int maxi = 1;
+        int count = 0;
+        int i = 0;
+        while(i < nums.size())
+        {
+            if(nums[i] == maxBitwiseAnd)
+            {
+                while(i < nums.size() and nums[i++] == maxBitwiseAnd) count++;
+                maxi = max(maxi,count);
+                count = 0;
+            }
+            else i++;
+        }
+        return maxi;
+    }
+};
+
+
+
+
+
+// User Template For Python
+class Solution:
+    def longestSubarray(self, nums: List[int]) -> int:
+        maxBitwiseAnd = max(nums)
+        maxi = 1
+        count = 0
+        i = 0
+        
+        while i < len(nums):
+            if nums[i] == maxBitwiseAnd:
+                while i < len(nums) and nums[i] == maxBitwiseAnd:
+                    count += 1
+                    i += 1
+                maxi = max(maxi, count)
+                count = 0
+            else:
+                i += 1
+        
+        return maxi
