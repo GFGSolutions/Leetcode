@@ -1,0 +1,75 @@
+// User Template For Java
+
+class Solution {
+  public String largestNumber(int[] nums) {
+    String[] array = new String[nums.length];
+    for(int i=0; i<nums.length; i++){
+      array[i] = String.valueOf(nums[i]);
+    }
+    Arrays.sort(array,(a,b)-> (b+a).compareTo(a+b));
+    if(array[0].equals("0")){
+      return "0";
+    }
+    StringBuilder largest = new StringBuilder();
+    for(int i=0; i<array.length; i++){
+      largest.append(array[i]);
+    }
+    return largest.toString();
+  }
+}
+
+
+
+
+
+// User Template For C++
+class Solution {
+public:
+    string largestNumber(vector<int>& nums) {
+        // Convert integers to strings
+        vector<string> array;
+        for (int num : nums) {
+            array.push_back(to_string(num));
+        }
+
+        // Custom comparator for sorting
+        sort(array.begin(), array.end(), [](const string &a, const string &b) {
+            return (b + a) < (a + b);
+        });
+
+        // Handle the case where the largest number is "0"
+        if (array[0] == "0") {
+            return "0";
+        }
+
+        // Build the largest number from the sorted array
+        string largest;
+        for (const string &num : array) {
+            largest += num;
+        }
+
+        return largest;
+    }
+};
+
+
+
+
+
+// User Template For python
+class Solution:
+    def largestNumber(self, nums: List[int]) -> str:
+        # Convert integers to strings
+        array = list(map(str, nums))
+        
+        # Custom sorting with a lambda function
+        array.sort(key=lambda x: x*10, reverse=True)
+        
+        # Handle the case where the largest number is "0"
+        if array[0] == "0":
+            return "0"
+        
+        # Build the largest number from the sorted array
+        largest = ''.join(array)
+        
+        return largest
