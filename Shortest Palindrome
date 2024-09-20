@@ -1,0 +1,88 @@
+// User Template For Java
+
+class Solution {
+  public String shortestPalindrome(String s) {
+    int count = kmp(new StringBuilder(s).reverse().toString(), s);
+    return new StringBuilder(s.substring(count)).reverse().toString() + s;
+  }
+  private int kmp(String txt, String patt) {
+    String newString = patt + '#' + txt;
+    int[] pi = new int[newString.length()];
+    int i = 1, k = 0;
+    while (i < newString.length()) {
+      if (newString.charAt(i) == newString.charAt(k)) {
+        k++;
+        pi[i] = k;
+        i++;
+      } else {
+        if (k > 0) {
+          k = pi[k - 1];
+        } else {
+          pi[i] = 0;
+          i++;
+        }
+      }
+    }
+    return pi[newString.length() - 1];
+  }
+}
+
+
+
+
+// User Template For C++
+class Solution {
+public:
+    string shortestPalindrome(string s) {
+        int count = kmp(string(s.rbegin(), s.rend()), s);
+        return string(s.rbegin(), s.rend()).substr(0, s.length() - count) + s;
+    }
+
+private:
+    int kmp(const string &txt, const string &patt) {
+        string newString = patt + '#' + txt;
+        vector<int> pi(newString.length(), 0);
+        int i = 1, k = 0;
+        while (i < newString.length()) {
+            if (newString[i] == newString[k]) {
+                k++;
+                pi[i] = k;
+                i++;
+            } else {
+                if (k > 0) {
+                    k = pi[k - 1];
+                } else {
+                    pi[i] = 0;
+                    i++;
+                }
+            }
+        }
+        return pi.back();
+    }
+};
+
+
+
+
+// User Template For Python3
+class Solution:
+    def shortestPalindrome(self, s: str) -> str:
+        count = self.kmp(s[::-1], s)
+        return s[count:][::-1] + s
+    def kmp(self, txt: str, patt: str) -> int:
+        new_string = patt + '#' + txt
+        pi = [0] * len(new_string)
+        i = 1
+        k = 0
+        while i < len(new_string):
+            if new_string[i] == new_string[k]:
+                k += 1
+                pi[i] = k
+                i += 1
+            else:
+                if k > 0:
+                    k = pi[k - 1]
+                else:
+                    pi[i] = 0
+                    i += 1
+        return pi[-1]
