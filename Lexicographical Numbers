@@ -1,0 +1,74 @@
+// User Template For Java
+
+class Solution {
+  public List<Integer> lexicalOrder(int n) {
+    List<Integer> result = new ArrayList<>();
+    for (int i = 1; i <= 9; i++) {
+      dfs(i, n, result);
+    }
+    return result;
+  }
+  private void dfs(int curr, int n, List<Integer> result) {
+    if (curr > n) return; 
+    result.add(curr);  
+    for (int i = 0; i <= 9; i++) {
+      if (curr * 10 + i > n) break; 
+      dfs(curr * 10 + i, n, result); 
+    }
+  }
+}
+
+
+
+
+
+// User Template For C++
+class Solution {
+public:
+    vector<int> lexicalOrder(int n) {
+        vector<int> result;
+        // Iterate over numbers 1 to 9 as root nodes
+        for (int i = 1; i <= 9; ++i) {
+            dfs(i, n, result);
+        }
+        return result;
+    }
+    
+    // Helper function for DFS traversal
+    void dfs(int curr, int n, vector<int>& result) {
+        if (curr > n) return;  // Stop recursion if current number exceeds n
+        result.push_back(curr); // Add current number to result
+        
+        // Try to generate the next lexicographical number
+        for (int i = 0; i <= 9; ++i) {
+            if (curr * 10 + i > n) break;  // If the number exceeds n, stop recursion
+            dfs(curr * 10 + i, n, result); // Recursive call
+        }
+    }
+};
+
+
+
+
+// User Template For Python
+class Solution:
+    def lexicalOrder(self, n: int) -> List[int]:
+        result = []
+        
+        # Iterate over numbers 1 to 9
+        for i in range(1, 10):
+            self.dfs(i, n, result)
+        
+        return result
+    
+    # Helper DFS function
+    def dfs(self, curr: int, n: int, result: List[int]):
+        if curr > n:
+            return  # Stop recursion if current number is greater than n
+        result.append(curr)  # Add current number to result
+        
+        # Try appending digits 0-9 to the current number
+        for i in range(10):
+            if curr * 10 + i > n:
+                return  # Stop if the next number exceeds n
+            self.dfs(curr * 10 + i, n, result)  # Recursive DFS
