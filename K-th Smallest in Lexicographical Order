@@ -1,0 +1,96 @@
+// User Template For Java
+
+class Solution {
+  private long countSteps(long curr, long n) {
+    long steps = 0, first = curr, last = curr;
+    while (first <= n) {
+      steps += Math.min(n + 1, last + 1) - first;
+      first *= 10;
+      last = last * 10 + 9;
+    }
+    return steps;
+  }
+  public int findKthNumber(int n, int k) {
+    long curr = 1; 
+    k--; 
+    while (k > 0) {
+      long steps = countSteps(curr, n);
+      if (steps <= k) {
+        curr++; 
+        k -= steps;
+      } else {
+        curr *= 10; 
+        k--;
+      }
+    }
+    return (int) curr;
+  }
+}
+
+
+
+
+
+// User Template For C++
+class Solution {
+public:
+    // Function to count how many numbers are there with the current prefix.
+    long countSteps(long curr, long n) {
+        long steps = 0, first = curr, last = curr;
+        while (first <= n) {
+            steps += min(n + 1, last + 1) - first;
+            first *= 10;
+            last = last * 10 + 9;
+        }
+        return steps;
+    }
+
+    int findKthNumber(int n, int k) {
+        long curr = 1;  // Start from the first prefix (1)
+        k--;  // Decrease k by 1 because we are starting from 1
+        
+        while (k > 0) {
+            long steps = countSteps(curr, n);
+            if (steps <= k) {
+                curr++;  // Move to the next sibling (prefix)
+                k -= steps;
+            } else {
+                curr *= 10;  // Move to the first child
+                k--;  // We have covered the current number
+            }
+        }
+        
+        return curr;
+    }
+};
+
+
+
+
+
+// User Template For Python
+class Solution:
+    # Helper function to count the steps from current prefix within range.
+    def countSteps(self, curr: int, n: int) -> int:
+        steps = 0
+        first, last = curr, curr
+        while first <= n:
+            steps += min(n + 1, last + 1) - first
+            first *= 10
+            last = last * 10 + 9
+        return steps
+    
+    def findKthNumber(self, n: int, k: int) -> int:
+        curr = 1  # Start from the first prefix
+        k -= 1  # Decrement k to make it zero-indexed
+        
+        while k > 0:
+            steps = self.countSteps(curr, n)
+            if steps <= k:
+                curr += 1  # Move to the next prefix
+                k -= steps
+            else:
+                curr *= 10  # Dive deeper into the current prefix
+                k -= 1
+        
+        return curr
