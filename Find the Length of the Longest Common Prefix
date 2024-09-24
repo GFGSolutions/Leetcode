@@ -1,0 +1,98 @@
+// User Template For Java
+
+import java.util.HashMap;
+class Solution {
+  public int longestCommonPrefix(int[] arr1, int[] arr2) {
+    HashMap<String, Integer> prefixMap = new HashMap<>();
+    for (int num : arr1) {
+      String strNum = Integer.toString(num);
+      String prefix = "";
+      for (char ch : strNum.toCharArray()) {
+        prefix += ch;
+        prefixMap.put(prefix, prefixMap.getOrDefault(prefix, 0) + 1);
+      }
+    }
+    int maxLength = 0;
+    for (int num : arr2) {
+      String strNum = Integer.toString(num);
+      String prefix = "";
+      for (char ch : strNum.toCharArray()) {
+        prefix += ch;
+        if (prefixMap.containsKey(prefix)) {
+          maxLength = Math.max(maxLength, prefix.length());
+        }
+      }
+    }
+    return maxLength;
+  }
+}
+
+
+
+
+
+// User Template For C++
+#include <bits/stdc++.h>
+using namespace std;
+
+class Solution {
+public:
+    int longestCommonPrefix(vector<int>& arr1, vector<int>& arr2) {
+        unordered_map<string, int> prefixMap;
+        
+        // Step 1: Build the prefix map for arr1
+        for (int num : arr1) {
+            string strNum = to_string(num);
+            string prefix = "";
+            for (char ch : strNum) {
+                prefix += ch;
+                prefixMap[prefix]++;
+            }
+        }
+        
+        int maxLength = 0;
+        
+        // Step 2: Check for common prefixes in arr2
+        for (int num : arr2) {
+            string strNum = to_string(num);
+            string prefix = "";
+            for (char ch : strNum) {
+                prefix += ch;
+                if (prefixMap.find(prefix) != prefixMap.end()) {
+                    maxLength = max(maxLength, static_cast<int>(prefix.length()));
+                }
+            }
+        }
+        
+        return maxLength;
+    }
+};
+
+
+
+
+// User Template For Python
+class Solution:
+    def longestCommonPrefix(self, arr1: List[int], arr2: List[int]) -> int:
+        prefix_map = {}
+        
+        # Step 1: Build the prefix map for arr1
+        for num in arr1:
+            str_num = str(num)
+            prefix = ""
+            for ch in str_num:
+                prefix += ch
+                prefix_map[prefix] = prefix_map.get(prefix, 0) + 1
+        
+        max_length = 0
+        
+        # Step 2: Check for common prefixes in arr2
+        for num in arr2:
+            str_num = str(num)
+            prefix = ""
+            for ch in str_num:
+                prefix += ch
+                if prefix in prefix_map:
+                    max_length = max(max_length, len(prefix))
+        
+        return max_length
