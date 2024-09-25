@@ -1,0 +1,34 @@
+// User Template For Java
+
+import java.util.HashMap;
+class TrieNode {
+  HashMap<Character, TrieNode> children = new HashMap<>();
+  int count = 0;}
+class Trie {
+  TrieNode root;
+  public Trie() {
+    root = new TrieNode();}
+  public void insert(String word) {
+    TrieNode node = root;
+    for (char ch : word.toCharArray()) {
+      node.children.putIfAbsent(ch, new TrieNode());
+      node = node.children.get(ch);
+      node.count++;}}
+  public int getPrefixScoreSum(String word) {
+    TrieNode node = root;
+    int scoreSum = 0;
+    for (char ch : word.toCharArray()) {
+      node = node.children.get(ch);
+      scoreSum += node.count;}
+    return scoreSum;}}
+class Solution {
+  public int[] sumPrefixScores(String[] words) {
+    Trie trie = new Trie();
+    for (String word : words) {
+      trie.insert(word);}
+    int[] result = new int[words.length];
+    for (int i = 0; i < words.length; i++) {
+      result[i] = trie.getPrefixScoreSum(words[i]);}
+    return result;
+  }
+}
