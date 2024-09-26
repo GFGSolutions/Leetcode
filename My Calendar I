@@ -1,0 +1,78 @@
+// User Template For Java
+
+import java.util.ArrayList;
+class MyCalendar {
+  private ArrayList<int[]> bookings;
+  public MyCalendar() {
+    bookings = new ArrayList<>(); }
+  public boolean book(int start, int end) {
+    for (int[] event : bookings) {
+      int existingStart = event[0];
+      int existingEnd = event[1];
+      if (start < existingEnd && end > existingStart) {
+        return false;
+      }
+    }
+    bookings.add(new int[] {start, end});
+    return true;
+  }
+}
+
+
+
+
+// User Template For C++
+class MyCalendar {
+private:
+    vector<pair<int, int>> bookings;  // Store the start and end of booked events
+
+public:
+    MyCalendar() {}
+
+    bool book(int start, int end) {
+        // Check for overlap with any existing bookings
+        for (auto& event : bookings) {
+            int existingStart = event.first;
+            int existingEnd = event.second;
+            
+            // If the new event overlaps with any existing event, return false
+            if (start < existingEnd && end > existingStart) {
+                return false;
+            }
+        }
+        // If no overlap, add the event to bookings
+        bookings.push_back({start, end});
+        return true;
+    }
+};
+
+/**
+ * Your MyCalendar object will be instantiated and called as such:
+ * MyCalendar* obj = new MyCalendar();
+ * bool param_1 = obj->book(start,end);
+ */
+
+
+
+
+// User Template For Python
+class MyCalendar:
+
+    def __init__(self):
+        self.bookings = []  # List to store booked intervals
+
+    def book(self, start: int, end: int) -> bool:
+        # Loop through existing bookings to check for overlap
+        for existingStart, existingEnd in self.bookings:
+            # Check if new event overlaps with an existing one
+            if start < existingEnd and end > existingStart:
+                return False
+        
+        # No overlap, add the event to the list of bookings
+        self.bookings.append((start, end))
+        return True
+
+
+# Your MyCalendar object will be instantiated and called as such:
+# obj = MyCalendar()
+# param_1 = obj.book(start,end)
