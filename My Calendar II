@@ -1,0 +1,107 @@
+// User Template For Java
+
+import java.util.ArrayList;
+import java.util.List;
+class MyCalendarTwo {
+  List<int[]> cal;
+  List<int[]> intrscs;
+  public MyCalendarTwo() {
+    cal = new ArrayList<>();
+    intrscs = new ArrayList<>();}
+  public boolean book(int start, int end) {
+    for (int[] x : intrscs) {
+      if ((start < x[0] && end > x[0]) || (start >= x[0] && start < x[1])) {
+        return false;
+      }
+    }
+    for (int[] x : cal) {
+      if ((start < x[0] && end > x[0]) || (start >= x[0] && start < x[1])) {
+        int cs = Math.max(x[0], start);
+        int ce = Math.min(x[1], end);
+        intrscs.add(new int[]{cs, ce});
+      }
+    }
+    cal.add(new int[]{start, end});
+    return true;
+  }
+}
+
+
+
+
+// User Template For C
+#include <stdbool.h>
+#include <stdio.h>
+#include <stdlib.h>
+
+typedef struct {
+    int start, end;
+} Interval;
+
+typedef struct {
+    Interval* cal;
+    Interval* intrscs;
+    int cal_size;
+    int intrscs_size;
+} MyCalendarTwo;
+
+MyCalendarTwo* myCalendarTwoCreate() {
+    MyCalendarTwo* obj = (MyCalendarTwo*)malloc(sizeof(MyCalendarTwo));
+    obj->cal = (Interval*)malloc(1000 * sizeof(Interval));  // Initial size of 1000
+    obj->intrscs = (Interval*)malloc(1000 * sizeof(Interval));
+    obj->cal_size = 0;
+    obj->intrscs_size = 0;
+    return obj;
+}
+
+bool myCalendarTwoBook(MyCalendarTwo* obj, int start, int end) {
+    for (int i = 0; i < obj->intrscs_size; i++) {
+        Interval x = obj->intrscs[i];
+        if ((start < x.start && end > x.start) || (start >= x.start && start < x.end)) {
+            return false;
+        }
+    }
+
+    for (int i = 0; i < obj->cal_size; i++) {
+        Interval x = obj->cal[i];
+        if ((start < x.start && end > x.start) || (start >= x.start && start < x.end)) {
+            int cs = (x.start > start) ? x.start : start;
+            int ce = (x.end < end) ? x.end : end;
+            obj->intrscs[obj->intrscs_size++] = (Interval){cs, ce};
+        }
+    }
+
+    obj->cal[obj->cal_size++] = (Interval){start, end};
+    return true;
+}
+
+void myCalendarTwoFree(MyCalendarTwo* obj) {
+    free(obj->cal);
+    free(obj->intrscs);
+    free(obj);
+}
+
+
+
+
+
+// User Template For Python
+class MyCalendarTwo:
+
+    def __init__(self):
+        self.cal = []
+        self.intrscs = []
+
+    def book(self, start: int, end: int) -> bool:
+        for x in self.intrscs:
+            if (start < x[0] and end > x[0]) or (start >= x[0] and start < x[1]):
+                return False
+
+        for x in self.cal:
+            if (start < x[0] and end > x[0]) or (start >= x[0] and start < x[1]):
+                cs = max(x[0], start)
+                ce = min(x[1], end)
+                self.intrscs.append([cs, ce])
+
+        self.cal.append([start, end])
+        return True
