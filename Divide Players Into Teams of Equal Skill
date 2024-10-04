@@ -1,0 +1,69 @@
+// User Template For Java
+
+import java.util.Arrays;
+class Solution {
+  public long dividePlayers(int[] skill) {
+    Arrays.sort(skill);
+    int n = skill.length;
+    int totalSkill = skill[0] + skill[n - 1]; 
+    long chemistrySum = 0;
+    for (int i = 0; i < n / 2; i++) {
+      if (skill[i] + skill[n - i - 1] != totalSkill) {
+        return -1;
+      }
+      chemistrySum += (long) skill[i] * skill[n - i - 1];
+    }
+    return chemistrySum; 
+  }
+}
+
+
+
+
+// User Template For C++
+class Solution {
+public:
+    long long dividePlayers(vector<int>& skill) {
+        // Step 1: Sort the skill array
+        sort(skill.begin(), skill.end());
+        
+        int n = skill.size();
+        int totalSkill = skill[0] + skill[n - 1]; // Required sum for each pair
+        long long chemistrySum = 0;
+
+        // Step 2: Pair players using two pointers
+        for (int i = 0; i < n / 2; i++) {
+            // Check if the sum of current pair matches the required totalSkill
+            if (skill[i] + skill[n - i - 1] != totalSkill) {
+                return -1; // Invalid configuration, return -1
+            }
+            // Calculate the chemistry (product of pair) and add it to the sum
+            chemistrySum += (long long)skill[i] * skill[n - i - 1];
+        }
+
+        return chemistrySum; // Return total chemistry
+    }
+};
+
+
+
+
+
+// User Template For Python
+class Solution:
+    def dividePlayers(self, skill: List[int]) -> int:
+        # Step 1: Sort the skill array
+        skill.sort()
+        
+        total_skill = skill[0] + skill[-1]  # Required sum for each pair
+        chemistry_sum = 0
+
+        # Step 2: Pair players using two pointers
+        for i in range(len(skill) // 2):
+            # Check if the sum of current pair matches the required total_skill
+            if skill[i] + skill[-i - 1] != total_skill:
+                return -1  # Invalid configuration, return -1
+            # Calculate the chemistry (product of pair) and add it to the sum
+            chemistry_sum += skill[i] * skill[-i - 1]
+
+        return chemistry_sum  # Return total chemistry
