@@ -1,0 +1,86 @@
+// User Template For Java
+
+import java.util.PriorityQueue;
+
+class Solution {
+  public long maxKelements(int[] nums, int k) {
+    PriorityQueue<Long> maxHeap = new PriorityQueue<>((a, b) -> Long.compare(b, a));
+    for (int num : nums) {
+      maxHeap.add((long) num);
+    }
+    long score = 0;
+    for (int i = 0; i < k; i++) {
+      long maxVal = maxHeap.poll();
+      score += maxVal;
+      maxHeap.add((maxVal + 2) / 3); 
+    }
+    return score;
+  }
+}
+
+
+
+
+
+// User Template For C++
+#include <queue>
+#include <cmath>
+#include <vector>
+
+class Solution {
+public:
+    long long maxKelements(std::vector<int>& nums, int k) {
+        // Max-heap to store the numbers (priority_queue is by default a max-heap)
+        std::priority_queue<long long> maxHeap;
+        
+        // Push all elements into the heap
+        for (int num : nums) {
+            maxHeap.push(num);
+        }
+        
+        long long score = 0;
+        
+        // Perform k operations
+        for (int i = 0; i < k; ++i) {
+            long long maxVal = maxHeap.top();
+            maxHeap.pop();
+            
+            // Add the largest value to the score
+            score += maxVal;
+            
+            // Replace the number with ceil(maxVal / 3)
+            maxHeap.push((maxVal + 2) / 3);  // Using (maxVal + 2) / 3 to simulate ceil
+        }
+        
+        return score;
+    }
+};
+
+
+
+
+
+// User Template For Python
+import heapq
+import math
+
+class Solution:
+    def maxKelements(self, nums: List[int], k: int) -> int:
+        # Max-heap (we negate values to simulate max-heap behavior)
+        maxHeap = [-num for num in nums]
+        heapq.heapify(maxHeap)
+        
+        score = 0
+        
+        # Perform k operations
+        for _ in range(k):
+            # Get the largest element (by negating to retrieve the max)
+            maxVal = -heapq.heappop(maxHeap)
+            
+            # Add to the score
+            score += maxVal
+            
+            # Replace the element with ceil(maxVal / 3)
+            heapq.heappush(maxHeap, -math.ceil(maxVal / 3))
+        
+        return score
