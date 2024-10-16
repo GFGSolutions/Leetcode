@@ -1,0 +1,126 @@
+// User Template For Java
+
+import java.util.PriorityQueue;
+class Solution {
+  public String longestDiverseString(int a, int b, int c) {
+    PriorityQueue<int[]> pq = new PriorityQueue<>((x, y) -> y[0] - x[0]);
+    if (a > 0) pq.offer(new int[]{a, 'a'});
+    if (b > 0) pq.offer(new int[]{b, 'b'});
+    if (c > 0) pq.offer(new int[]{c, 'c'});
+    StringBuilder result = new StringBuilder();
+    while (!pq.isEmpty()) {
+      int[] first = pq.poll();
+      if (result.length() >= 2 && result.charAt(result.length() - 1) == first[1] &&
+        result.charAt(result.length() - 2) == first[1]) {
+        if (pq.isEmpty()) break;
+        int[] second = pq.poll();
+        result.append((char) second[1]);
+        second[0]--;
+        if (second[0] > 0) pq.offer(second);
+        pq.offer(first);
+      } else {
+        result.append((char) first[1]);
+        first[0]--;
+        if (first[0] > 0) pq.offer(first);
+      }
+    }
+    return result.toString();
+  }
+}
+
+
+
+
+// User Template For C++
+#include <queue>
+#include <string>
+using namespace std;
+
+class Solution {
+public:
+    string longestDiverseString(int a, int b, int c) {
+        // Priority queue to store the characters and their counts.
+        priority_queue<pair<int, char>> pq;
+        if (a > 0) pq.push({a, 'a'});
+        if (b > 0) pq.push({b, 'b'});
+        if (c > 0) pq.push({c, 'c'});
+
+        string result = "";
+
+        while (!pq.empty()) {
+            // Get the character with the most count.
+            auto [count1, char1] = pq.top();
+            pq.pop();
+
+            // Check if the last two characters in result are the same.
+            if (result.size() >= 2 && result.back() == char1 && result[result.size() - 2] == char1) {
+                if (pq.empty()) break;  // No valid characters left.
+
+                // Get the second most character.
+                auto [count2, char2] = pq.top();
+                pq.pop();
+
+                // Add the second character to avoid consecutive repetition.
+                result += char2;
+                count2--;
+
+                if (count2 > 0) pq.push({count2, char2});
+
+                // Push back the most frequent character for later use.
+                pq.push({count1, char1});
+            } else {
+                // If no repetition issue, add the most frequent character.
+                result += char1;
+                count1--;
+
+                if (count1 > 0) pq.push({count1, char1});
+            }
+        }
+
+        return result;
+    }
+};
+
+
+
+
+// User Template For Python
+import heapq
+
+class Solution:
+    def longestDiverseString(self, a: int, b: int, c: int) -> str:
+        # Max heap to always pick the character with the highest count.
+        pq = []
+        if a > 0:
+            heapq.heappush(pq, (-a, 'a'))
+        if b > 0:
+            heapq.heappush(pq, (-b, 'b'))
+        if c > 0:
+            heapq.heappush(pq, (-c, 'c'))
+
+        result = []
+
+        while pq:
+            count1, char1 = heapq.heappop(pq)
+
+            # If the last two characters are the same as char1.
+            if len(result) >= 2 and result[-1] == char1 and result[-2] == char1:
+                if not pq:
+                    break  # No valid characters left to pick.
+
+                count2, char2 = heapq.heappop(pq)
+                result.append(char2)
+                count2 += 1  # Decrease count (negated)
+
+                if count2 < 0:
+                    heapq.heappush(pq, (count2, char2))
+
+                heapq.heappush(pq, (count1, char1))
+            else:
+                result.append(char1)
+                count1 += 1  # Decrease count (negated)
+
+                if count1 < 0:
+                    heapq.heappush(pq, (count1, char1))
+
+        return ''.join(result)
