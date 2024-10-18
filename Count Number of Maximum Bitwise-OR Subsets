@@ -1,0 +1,85 @@
+// User Template For Java
+
+class Solution {
+  public void backtrack(int[] nums, int index, int currentOR, int maxOR, int[] count) {
+    if (currentOR == maxOR) {
+      count[0]++;}
+    for (int i = index; i < nums.length; i++) {
+      backtrack(nums, i + 1, currentOR | nums[i], maxOR, count);
+    }
+  }
+  public int countMaxOrSubsets(int[] nums) {
+    int maxOR = 0;
+    for (int num : nums) {
+      maxOR |= num;
+    }
+    int[] count = new int[1];
+    backtrack(nums, 0, 0, maxOR, count);
+    return count[0];
+  }
+}
+
+
+
+
+
+// User Template For C++
+class Solution
+{
+public:
+    void backtrack(const vector<int> &nums, int index, int currentOR, int maxOR, int &count)
+    {
+        if (currentOR == maxOR)
+        {
+            count++;
+        }
+
+        for (int i = index; i < nums.size(); ++i)
+        {
+            backtrack(nums, i + 1, currentOR | nums[i], maxOR, count);
+        }
+    }
+
+    int countMaxOrSubsets(vector<int> &nums)
+    {
+        int maxOR = 0;
+
+        // Step 1: Compute the maximum OR
+        for (int num : nums)
+        {
+            maxOR |= num;
+        }
+
+        int count = 0;
+        // Step 2: Backtrack to count the subsets
+        backtrack(nums, 0, 0, maxOR, count);
+
+        return count;
+    }
+};
+
+
+
+
+
+// User Template For Python
+class Solution:
+    def backtrack(self, nums, index, currentOR, maxOR, count):
+        if currentOR == maxOR:
+            count[0] += 1
+        
+        for i in range(index, len(nums)):
+            self.backtrack(nums, i + 1, currentOR | nums[i], maxOR, count)
+    
+    def countMaxOrSubsets(self, nums: List[int]) -> int:
+        maxOR = 0
+        
+        # Step 1: Compute the maximum OR
+        for num in nums:
+            maxOR |= num
+        
+        count = [0]
+        # Step 2: Backtrack to count the subsets
+        self.backtrack(nums, 0, 0, maxOR, count)
+        
+        return count[0]
