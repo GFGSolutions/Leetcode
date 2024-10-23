@@ -1,0 +1,126 @@
+// User Template For Java
+
+class Solution {
+  public TreeNode replaceValueInTree(TreeNode root) {
+    dfs(new TreeNode[] {root});
+    root.val = 0;
+    return root;
+  }
+  private void dfs(TreeNode[] arr) {
+    if (arr.length == 0) return;
+    int sum = 0;
+    for (TreeNode node : arr) {
+      if (node == null) continue;
+      if (node.left != null) sum += node.left.val;
+      if (node.right != null) sum += node.right.val;
+    }
+    TreeNode[] childArr = new TreeNode[arr.length * 2];
+    int index = 0;
+    for (TreeNode node : arr) {
+      int curSum = 0;
+      if (node.left != null) curSum += node.left.val;
+      if (node.right != null) curSum += node.right.val;
+      if (node.left != null) {
+        node.left.val = sum - curSum;
+        childArr[index++] = node.left;
+      }
+      if (node.right != null) {
+        node.right.val = sum - curSum;
+        childArr[index++] = node.right;
+      }
+    }
+    dfs(java.util.Arrays.copyOf(childArr, index));
+  }
+}
+
+
+
+
+// User Template For C++
+#include <vector>
+
+struct TreeNode {
+    int val;
+    TreeNode *left;
+    TreeNode *right;
+    TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+};
+
+class Solution {
+public:
+    TreeNode* replaceValueInTree(TreeNode* root) {
+        root->val = 0;
+        dfs(std::vector<TreeNode*>{root});
+        return root;
+    }
+
+private:
+    void dfs(std::vector<TreeNode*> arr) {
+        if (arr.empty()) return;
+
+        int sum = 0;
+        for (auto node : arr) {
+            if (!node) continue;
+            if (node->left) sum += node->left->val;
+            if (node->right) sum += node->right->val;
+        }
+
+        std::vector<TreeNode*> childArr;
+        for (auto node : arr) {
+            int curSum = 0;
+            if (node->left) curSum += node->left->val;
+            if (node->right) curSum += node->right->val;
+
+            if (node->left) {
+                node->left->val = sum - curSum;
+                childArr.push_back(node->left);
+            }
+            if (node->right) {
+                node->right->val = sum - curSum;
+                childArr.push_back(node->right);
+            }
+        }
+
+        dfs(childArr);
+    }
+};
+
+
+
+
+
+// User Template For Python
+def replaceValueInTree(root):
+    def dfs(arr):
+        if not arr:
+            return
+
+        total_sum = 0
+        for node in arr:
+            if not node:
+                continue
+            if node.left:
+                total_sum += node.left.val
+            if node.right:
+                total_sum += node.right.val
+
+        childArr = []
+        for node in arr:
+            curSum = 0
+            if node.left:
+                curSum += node.left.val
+            if node.right:
+                curSum += node.right.val
+
+            if node.left:
+                node.left.val = total_sum - curSum
+                childArr.append(node.left)
+            if node.right:
+                node.right.val = total_sum - curSum
+                childArr.append(node.right)
+
+        dfs(childArr)
+
+    root.val = 0
+    dfs([root])
+    return root
