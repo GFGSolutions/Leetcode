@@ -1,0 +1,61 @@
+// User Template For Java
+
+class Solution {
+  public int longestSquareStreak(int[] nums) {
+    Map<Integer, Integer> mp = new HashMap<>();
+    Arrays.sort(nums);
+    int res = -1;
+    for (int num : nums) {
+      int sqrt = (int) Math.sqrt(num);
+      if (sqrt * sqrt == num && mp.containsKey(sqrt)) {
+        mp.put(num, mp.get(sqrt) + 1);
+        res = Math.max(res, mp.get(num));
+      } else {
+        mp.put(num, 1);
+      }
+    }
+    return res;
+  }
+}
+
+
+
+
+// User Template For C++
+class Solution {
+public:
+    int longestSquareStreak(vector<int>& nums) {
+        map<int, int>mp;
+        sort(nums.begin(), nums.end());
+        int res = -1;
+        for(int num: nums) {
+            int _sqrt = sqrt(num);
+            if(_sqrt*_sqrt == num && mp.find(_sqrt)!=mp.end()) {
+                mp[num] = mp[_sqrt]+1;
+                res = max(res, mp[num]);
+            } else mp[num] = 1;
+        }
+        return res;
+    }
+};
+
+
+
+
+// User Template For Python
+class Solution:
+    def longestSquareStreak(self, nums):
+        mp = {}
+        nums.sort()
+        res = -1
+
+        for num in nums:
+            sqrt = isqrt(num)
+
+            if sqrt * sqrt == num and sqrt in mp:
+                mp[num] = mp[sqrt] + 1
+                res = max(res, mp[num])
+            else:
+                mp[num] = 1
+
+        return res
