@@ -1,15 +1,18 @@
 // User template for Java
 
 class Solution {
-  public int countInterestingSubarrays(List<Integer> nums, int modulo, int k) {
-    int res = 0;
-    for (int i = 0; i < nums.size(); i++) {
-      int cnt = 0;
-      for (int j = i; j < nums.size(); j++) {
-        if (nums.get(j) % modulo == k) cnt++;
-        if (cnt % modulo == k) res++;
-      }
+    public long countInterestingSubarrays(List<Integer> nums, int m, int k) {
+        long total = 0;
+        Map<Integer, Integer> map = new HashMap<>();
+        map.put(0, 1);
+        int count = 0;
+        for (int num : nums) {
+            if (num % m == k) count++;
+            int remainder = (count - k) % m;
+            if (remainder < 0) remainder += m;
+            total += map.getOrDefault(remainder, 0);
+            map.put(count % m, map.getOrDefault(count % m, 0) + 1);
+        }
+        return total;
     }
-    return res;
-  }
 }
