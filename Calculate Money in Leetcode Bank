@@ -1,0 +1,11 @@
+// User template for Java
+
+class Solution {
+  public int totalMoney(int n) {
+    int w = n / 7;
+    int r = n % 7;
+    int fullWeeksSum = w * 28 + 7 * (w * (w - 1) / 2);
+    int remSum = r * (1 + w) + (r * (r - 1) / 2);
+    return fullWeeksSum + remSum;
+  }
+}
