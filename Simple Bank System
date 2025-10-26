@@ -1,0 +1,33 @@
+// User template for Java
+
+class Bank {
+  private long[] bal;
+  private boolean valid(int account) {
+    return account >= 1 && account <= bal.length;
+  }
+  public Bank(long[] balance) {
+    this.bal = new long[balance.length];
+    System.arraycopy(balance, 0, this.bal, 0, balance.length);
+  }
+  public boolean transfer(int account1, int account2, long money) {
+    if (!valid(account1) || !valid(account2)) return false;
+    int a = account1 - 1;
+    int b = account2 - 1;
+    if (bal[a] < money) return false;
+    bal[a] -= money;
+    bal[b] += money;
+    return true;
+  }
+  public boolean deposit(int account, long money) {
+    if (!valid(account)) return false;
+    bal[account - 1] += money;
+    return true;
+  }
+  public boolean withdraw(int account, long money) {
+    if (!valid(account)) return false;
+    int a = account - 1;
+    if (bal[a] < money) return false;
+    bal[a] -= money;
+    return true;
+  }
+}
