@@ -1,0 +1,12 @@
+// User template for Java
+
+class Solution {
+  public int smallestNumber(int n) {
+    int k = 1;
+    while (true) {
+      long val = (1L << k) - 1;
+      if (val >= n) return (int) val;
+      k++;
+    }
+  }
+}
