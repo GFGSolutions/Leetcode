@@ -1,0 +1,19 @@
+// User template for Java
+
+class Solution {
+  public long largestSquareArea(int[][] bl, int[][] tr) {
+    long s = 0;
+    int n = bl.length;
+    for (int i = 0; i < n; i++) {
+      for (int j = i + 1; j < n; j++) {
+        long minX = Math.max(bl[i][0], bl[j][0]);
+        long maxX = Math.min(tr[i][0], tr[j][0]);
+        long minY = Math.max(bl[i][1], bl[j][1]);
+        long maxY = Math.min(tr[i][1], tr[j][1]);
+        long len = Math.min(maxX - minX, maxY - minY);
+        s = Math.max(s, len);
+      }
+    }
+    return s * s;
+  }
+}
