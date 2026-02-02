@@ -1,0 +1,43 @@
+// User template for Java
+
+class Solution {
+  public long minimumCost(int[] nums, int k, int dist) {
+    long result = Long.MAX_VALUE, windowSum = 0l;
+    int n = nums.length;
+    TreeSet<Integer> using = new TreeSet<>((a, b) -> nums[a] == nums[b] ? a - b : nums[a] - nums[b]);
+    TreeSet<Integer> waiting = new TreeSet<>((a, b) -> nums[a] == nums[b] ? a - b : nums[a] - nums[b]);
+    for(int i = 1; i <= dist + 1; i++){
+      using.add(i);
+      windowSum += nums[i];
+    }
+    while(using.size() > k - 1){
+      int i = using.pollLast();
+      windowSum -= nums[i];
+      waiting.add(i);
+    } 
+    result = Math.min(result, windowSum);
+    for(int i = 1; i + dist + 1 < n; i++){
+      waiting.add(i + dist + 1);
+      if(using.contains(i)){
+        windowSum -= nums[i];
+        using.remove(i);
+        int j = waiting.pollFirst();
+        windowSum += nums[j];
+        using.add(j);
+      }else{
+        waiting.remove(i);
+        int j1 = waiting.first(), j2 = using.last();
+        if(nums[j1] < nums[j2]){
+          windowSum -= nums[j2];
+          using.remove(j2);
+          waiting.add(j2);
+          windowSum += nums[j1];
+          using.add(j1);
+          waiting.remove(j1);
+        }
+      }
+      result = Math.min(result, windowSum);
+    }
+    return result + nums[0];
+  }
+}
