@@ -1,0 +1,41 @@
+// User template for Java
+
+import java.util.*;
+
+class Solution {
+  int[] dx = {1, -1, 0, 0};
+  int[] dy = {0, 0, 1, -1};
+  public boolean findSafeWalk(List<List<Integer>> grid, int health) {
+    int n = grid.size();
+    int m = grid.get(0).size();
+    int[][] maxHealth = new int[n][m];
+    for (int i = 0; i < n; i++) {
+      Arrays.fill(maxHealth[i], -1);
+    }
+    int initialH = health - grid.get(0).get(0);
+    if (initialH <= 0) return false;
+    Queue<int[]> q = new LinkedList<>();
+    q.offer(new int[]{initialH, 0, 0});
+    maxHealth[0][0] = initialH;
+    while (!q.isEmpty()) {
+      int[] curr = q.poll();
+      int currH = curr[0];
+      int r = curr[1];
+      int c = curr[2];
+      if (r == n - 1 && c == m - 1) {
+        return true;
+      }
+      for (int d = 0; d < 4; d++) {
+        int nr = r + dx[d];
+        int nc = c + dy[d];
+        if (nr < 0 || nc < 0 || nr >= n || nc >= m) continue;
+        int remH = currH - grid.get(nr).get(nc);
+        if (remH <= 0) continue;
+        if (remH <= maxHealth[nr][nc]) continue;
+        maxHealth[nr][nc] = remH;
+        q.offer(new int[]{remH, nr, nc});
+      }
+    }
+    return false;
+  }
+}
