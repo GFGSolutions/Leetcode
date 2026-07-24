@@ -1,0 +1,30 @@
+// User template for Java
+
+class Solution {
+  public int uniqueXorTriplets(int[] nums) {
+    final int MAX_XOR = 2048;
+    boolean[] present = new boolean[MAX_XOR];
+    for (int x : nums) {
+      present[x] = true;
+    }
+    boolean[] dp = new boolean[MAX_XOR];
+    dp[0] = true;
+    for (int step = 0; step < 3; step++) {
+      boolean[] next = new boolean[MAX_XOR];
+      for (int cur = 0; cur < MAX_XOR; cur++) {
+        if (!dp[cur]) continue;
+        for (int v = 0; v < MAX_XOR; v++) {
+          if (present[v]) {
+            next[cur ^ v] = true;
+          }
+        }
+      }
+      dp = next;
+    }
+    int ans = 0;
+    for (boolean ok : dp) {
+      if (ok) ans++;
+    }
+    return ans;
+  }
+}
